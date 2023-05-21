@@ -8,17 +8,16 @@ const About = () => {
         <div dir={'rtl'}>
 
             <Container className="my-5">
-                <h1 className="text-center mb-4">About Us</h1>
+                <h1 className="text-center mb-4">קצת עלינו</h1>
 
                 <Row className="mb-5">
                     <Col md={6}>
                         <Card className="shadow-sm">
                             <Card.Body>
-                                <Card.Title>Our Project</Card.Title>
+                                <Card.Title>הפרויקט שלנו</Card.Title>
                                 <Card.Text>
-                                    We are a team of two software engineering students working on a project that
-                                    involves generating a 3D STL file from a 2D image, which can then be printed on a 3D
-                                    printer.
+                                    אנחנו צוות של שני סטודנטים להנדסת תוכנה במכללת עזריאלי שעובדים על פרויקט שכולל יצירת קובץ STL מתמונה דו מימדית, שאותה ניתן להדפיס על גבי תלת-מימד
+                                    מדפסת.
                                 </Card.Text>
                             </Card.Body>
                         </Card>
@@ -27,10 +26,9 @@ const About = () => {
                     <Col md={6}>
                         <Card className="shadow-sm">
                             <Card.Body>
-                                <Card.Title>Our Images</Card.Title>
+                                <Card.Title>קצת דוגמאות</Card.Title>
                                 <Card.Text>
-                                    Here are some of the images that we have converted to 3D STL files using our
-                                    software.
+                                    להלן כמה מהתמונות שמהרנו לקבצי STL באמצעות המודל שפיתחנו.
                                 </Card.Text>
                             </Card.Body>
                         </Card>
@@ -68,7 +66,7 @@ const About = () => {
 
                 <Row>
                     <Col>
-                        <h2 className="text-center mb-4">Enterprises We Work With</h2>
+                        <h2 className="text-center mb-4">מוסדות שאנחנו עובדים איתם</h2>
 
                         <Row className="justify-content-center align-items-center">
                             <Col md={3}>

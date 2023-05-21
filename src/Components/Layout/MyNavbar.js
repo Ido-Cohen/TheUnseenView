@@ -1,20 +1,27 @@
 import React, {useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import logo from "../App/logo.png";
 import {Dropdown, DropdownButton} from "react-bootstrap";
 import {IL, US} from 'country-flag-icons/react/3x2'
 
 const Navbar = () => {
-    const [language, setLanguage] = useState("English");
-
+    const [language, setLanguage] = useState("Hebrew");
+    const navigate = useNavigate();
     const handleLanguageChange = (lang) => {
+        if (language !== lang) {
+            if (lang === "English") {
+                navigate(window.location.pathname.replace("/he", ""))
+            } else {
+                navigate(`/he${window.location.pathname}`)
+            }
+        }
         setLanguage(lang);
     };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4"
              dir={language === "English" ? 'ltr' : 'rtl'}>
-            <Link to="/about" className="navbar-brand">
+            <Link to={language === "English" ? "/about" : "/he/about"} className="navbar-brand">
                 <img
                     src={logo}
                     alt="Logo"

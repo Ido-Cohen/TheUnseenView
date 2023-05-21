@@ -13,7 +13,11 @@ function Generate({onGenerate}) {
     const [maxObjects, setMaxObjects] = useState("");
     const [image, setImage] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
+    const [percentage, setPercentage] = useState(0);
 
+    const handlePercentageChange = (event) => {
+        setPercentage(event.target.value);
+    };
 
     const Loader = () => (
         <div className="loader">
@@ -81,6 +85,7 @@ function Generate({onGenerate}) {
             depth,
             maxObjects,
             image,
+            percentage
         });
         setLoading(true);
         try {
@@ -170,6 +175,21 @@ function Generate({onGenerate}) {
                             handleFormValidation();
                         }}
                     />
+                </Form.Group>
+                <Form.Group controlId="formPercentageSlider">
+                    <Form.Label>Background brightness level</Form.Label>
+                    <div className="d-flex align-items-center">
+                        <div className="mr-2">{percentage}%</div>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value={percentage}
+                            onChange={handlePercentageChange}
+                            className="form-control-range flex-grow-1"
+                        />
+                    </div>
                 </Form.Group>
                 <Form.Group controlId="image">
                     <Form.Label>Image</Form.Label>
