@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import shapes from './constants/shapes';
 import './CroppedImage.css';
 
 const CroppedImage = ({ croppedImage, detected }) => {
+    const [selectedShapes, setSelectedShapes] = useState({});
+
+    const handleShapeSelection = (label, shape) => {
+        setSelectedShapes(prevState => ({
+            ...prevState,
+            [label]: shape,
+        }));
+    };
+
     return (
         <div className="container mt-4">
             <h1 className="text-center mb-4">Generated Image</h1>
@@ -39,14 +48,22 @@ const CroppedImage = ({ croppedImage, detected }) => {
                                                     aria-haspopup="true"
                                                     aria-expanded="false"
                                                 >
-                                                    Select Shape
+                                                    {selectedShapes[label] ? selectedShapes[label].description : 'Select Shape'}
                                                 </button>
                                                 <div className="dropdown-menu" aria-labelledby={`dropdownMenu${index}`}>
-                                                    {Object.entries(shapes).map(([key, shape]) => (
-                                                        <a key={key} className="dropdown-item" href="#">
-                                                            {shape.description}
-                                                        </a>
-                                                    ))}
+                                                    {Object.entries(shapes).map(([key, shape]) => {
+                                                        const isShapeSelected = selectedShapes[label] && selectedShapes[label].value === key;
+                                                        return (
+                                                            <a
+                                                                key={key}
+                                                                className={`dropdown-item ${isShapeSelected ? 'active' : ''}`}
+                                                                href="#"
+                                                                onClick={() => handleShapeSelection(label, shape)}
+                                                            >
+                                                                {shape.description}
+                                                            </a>
+                                                        );
+                                                    })}
                                                 </div>
                                             </div>
                                         </div>
