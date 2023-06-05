@@ -1,5 +1,6 @@
 import React from 'react';
-import shapes from './constants/shapes'; // Assuming you have the shape constants defined in a separate file
+import shapes from './constants/shapes';
+import './CroppedImage.css';
 
 const CroppedImage = ({ croppedImage, detected }) => {
     return (
@@ -15,9 +16,7 @@ const CroppedImage = ({ croppedImage, detected }) => {
                             <h4 className="card-title">Detected Data</h4>
                             {Object.entries(detected).map(([label, colors]) => (
                                 <div key={label}>
-                                    <p className="card-text">
-                                        {label}:
-                                    </p>
+                                    <p className="card-text">{label}:</p>
                                     <div className="color-squares">
                                         {colors.map((color, index) => (
                                             <div
@@ -29,7 +28,9 @@ const CroppedImage = ({ croppedImage, detected }) => {
                                     </div>
                                     <select className="form-control">
                                         {Object.entries(shapes).map(([key, shape]) => (
-                                            <option key={key} value={key}>{shape.description}</option>
+                                            <option key={key} value={key}>
+                                                {shape.description}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>

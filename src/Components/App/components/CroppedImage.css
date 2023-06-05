@@ -1,0 +1,12 @@
+.color-square {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+}
+
+.color-squares {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
