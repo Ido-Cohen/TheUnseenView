@@ -1,35 +1,35 @@
 const shapes = {
     TRIANGLES: {
         name: "triangles",
-        description: "A shape consisting of three sides and three angles.",
+        description: "Triangles",
     },
     VERTICAL_LINES: {
         name: "vertical lines",
-        description: "Straight lines running from top to bottom.",
+        description: "Vertical Lines",
     },
     DIAGONAL_LINES: {
         name: "diagonal lines",
-        description: "Lines slanted at an angle across the shape.",
+        description: "Diagonal Lines",
     },
     SQUARES: {
         name: "squares",
-        description: "A four-sided polygon with equal sides and angles.",
+        description: "Squares",
     },
     CIRCLES: {
         name: "circles",
-        description: "A perfectly round shape with no edges or corners.",
+        description: "Circles",
     },
     UPSIDE_DOWN_TRIANGLES: {
         name: "upside-down triangles",
-        description: "Triangles flipped upside down with the point at the bottom.",
+        description: "Upside-down Triangles",
     },
     OPPOSITE_DIAGONAL_LINES: {
         name: "opposite diagonal lines",
-        description: "Lines slanted at an angle in the opposite direction.",
+        description: "Opposite Diagonal Lines",
     },
     HORIZONTAL_LINES: {
         name: "horizontal lines",
-        description: "Straight lines running from left to right.",
+        description: "Horizontal Lines",
     },
 };
 
