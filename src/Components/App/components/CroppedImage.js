@@ -1,7 +1,7 @@
 import React from 'react';
 import download from "downloadjs";
 
-const GeneratedImage = ({generatedImage}) => {
+const CroppedImage = ({generatedImage}) => {
     const handleDownload = () => {
         download(generatedImage.stl, "generated_file.stl");
     };
@@ -26,4 +26,4 @@ const GeneratedImage = ({generatedImage}) => {
     );
 };
 
-export default GeneratedImage;
+export default CroppedImage;

@@ -1,26 +1,23 @@
-// import logo from '../../logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MyNavbar from "../Layout/MyNavbar";
-// import Navbar from "../Layout/Navbar";
 import React, {useState} from "react";
-import {Route, Routes, useNavigate} from "react-router-dom";
-import Home from "./components/Home";
+import { Route, Routes, useNavigate} from "react-router-dom";
 import Generate from "./components/Generate";
 import About from "./components/About";
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import GeneratedImage from "./components/GeneratedImage";
+import CroppedImage from "./components/CroppedImage";
 import GenerateHE from "./components/GenerateHE";
 import AboutHE from "./components/AboutHE";
 
 function App() {
     const [generatedData, setGeneratedData] = useState(null);
     const navigate = useNavigate();
-    const handleGenerate = (data) => {
+    const handleCrop = (data) => {
         console.log(data);
         setGeneratedData(data);
-        navigate('/generated-image');
+        navigate('/cropped-image');
     };
     return (
 
@@ -59,18 +56,16 @@ function App() {
             {/*</nav>*/}
             <MyNavbar/>
             <Routes>
-                <Route exact path="/home" element={<Home/>}/>
+                <Route exact path="/he" element={<AboutHE/>}/>
+                <Route exact path="/" element={<About/>}/>
 
-                <Route exact path="/generate" element={<Generate onGenerate={handleGenerate}/>}/>
-                <Route exact path="/he/generate" element={<GenerateHE onGenerate={handleGenerate}/>}/>
-                {/*<Generate />*/}
-                {/*</Route>*/}
-                <Route exact path="/generated-image" element={<GeneratedImage generatedData={generatedData}/>}/>
+                <Route exact path="/generate" element={<Generate onCrop={handleCrop}/>}/>
+                <Route exact path="/he/generate" element={<GenerateHE onCrop={handleCrop}/>}/>
+                <Route exact path="/cropped-image" element={<CroppedImage generatedData={generatedData}/>}/>
 
                 <Route exact path="/about" element={<About/>}/>
                 <Route exact path="/he/about" element={<AboutHE/>}/>
 
-                {/*</Route>*/}
             </Routes>
             <ToastContainer position="top-center"/>
         </div>

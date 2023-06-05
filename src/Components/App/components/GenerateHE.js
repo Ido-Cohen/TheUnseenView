@@ -4,7 +4,7 @@ import axios from "axios";
 import '../../../loader.css';
 import {toast} from 'react-toastify';
 
-function Generate({onGenerate}) {
+function Generate({onCrop}) {
     const [height, setHeight] = useState("");
     const [width, setWidth] = useState("");
     const [imagePreview, setImagePreview] = useState("");
@@ -90,11 +90,11 @@ function Generate({onGenerate}) {
         try {
             const response = await axios.get('https://myapi.com/data');
             console.log(response.data);
-            onGenerate(response.data);
+            onCrop(response.data);
             toast.success('3D file generated successfully!');
         } catch (error) {
             console.log(error);
-            onGenerate(error);
+            onCrop(error);
             toast.error('Failed to generate 3D file.');
         }
         setLoading(false);

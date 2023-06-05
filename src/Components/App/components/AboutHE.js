@@ -40,7 +40,7 @@ const About = () => {
                         <Card className="shadow-sm">
                             <Card.Img variant="top" src="https://via.placeholder.com/400x300"/>
                             <Card.Body>
-                                <Card.Title>Image 1</Card.Title>
+                                <Card.Title>תמונה 1</Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -49,7 +49,7 @@ const About = () => {
                         <Card className="shadow-sm">
                             <Card.Img variant="top" src="https://via.placeholder.com/400x300"/>
                             <Card.Body>
-                                <Card.Title>Image 2</Card.Title>
+                                <Card.Title>תמונה 2</Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -58,7 +58,7 @@ const About = () => {
                         <Card className="shadow-sm">
                             <Card.Img variant="top" src="https://via.placeholder.com/400x300"/>
                             <Card.Body>
-                                <Card.Title>Image 3</Card.Title>
+                                <Card.Title>תמונה 3</Card.Title>
                             </Card.Body>
                         </Card>
                     </Col>
