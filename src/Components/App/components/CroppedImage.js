@@ -30,14 +30,24 @@ const CroppedImage = ({ croppedImage, detected }) => {
                           ))}
                         </span>
                                             </p>
-                                            <div className="custom-select-arrow">
-                                                <select className="form-control">
+                                            <div className="dropdown">
+                                                <button
+                                                    className="btn btn-secondary dropdown-toggle"
+                                                    type="button"
+                                                    id={`dropdownMenu${index}`}
+                                                    data-toggle="dropdown"
+                                                    aria-haspopup="true"
+                                                    aria-expanded="false"
+                                                >
+                                                    Select Shape
+                                                </button>
+                                                <div className="dropdown-menu" aria-labelledby={`dropdownMenu${index}`}>
                                                     {Object.entries(shapes).map(([key, shape]) => (
-                                                        <option key={key} value={key}>
+                                                        <a key={key} className="dropdown-item" href="#">
                                                             {shape.description}
-                                                        </option>
+                                                        </a>
                                                     ))}
-                                                </select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
