@@ -31,7 +31,7 @@ const CroppedImage = ({ croppedImage, detected }) => {
                         </span>
                                             </p>
                                             <div className="custom-select-arrow">
-                                                <select className="form-control">
+                                                <select className="form-control" id={label}>
                                                     {Object.entries(shapes).map(([key, shape]) => (
                                                         <option key={key} value={key}>
                                                             {shape.description}
