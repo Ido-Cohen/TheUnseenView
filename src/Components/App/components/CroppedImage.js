@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import shapes from './constants/shapes';
 import './CroppedImage.css';
 
 const CroppedImage = ({ croppedImage, detected }) => {
     const [selectedShapes, setSelectedShapes] = useState({});
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         // Initialize Bootstrap dropdowns when the component mounts
-        window.$('.dropdown-toggle').dropdown();
+        if (dropdownRef.current) {
+            window.$(dropdownRef.current).dropdown();
+        }
     }, []);
 
     const handleShapeSelection = (label, shape) => {
@@ -52,6 +55,7 @@ const CroppedImage = ({ croppedImage, detected }) => {
                                                     data-toggle="dropdown"
                                                     aria-haspopup="true"
                                                     aria-expanded="false"
+                                                    ref={dropdownRef}
                                                 >
                                                     {selectedShapes[label] ? selectedShapes[label].description : 'Select Shape'}
                                                 </button>
