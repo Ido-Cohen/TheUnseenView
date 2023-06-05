@@ -18,16 +18,23 @@ const CroppedImage = ({ croppedImage, detected }) => {
                                 {Object.entries(detected).map(([label, colors], index) => (
                                     <div key={label} className="col-md-4 mb-4">
                                         <div className="detected-object">
-                                            <p className="card-text">{label}:</p>
-                                            <div className="color-squares">
-                                                {colors.map((color, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="color-square"
-                                                        style={{ backgroundColor: `rgb(${color.join(', ')})` }}
-                                                    ></div>
-                                                ))}
-                                            </div>
+                                            <p className="card-text">
+                                                <span className="object-name">{label}:</span>
+                                                <span className="color-squares">
+                          {colors.map((color, index) => (
+                              <span
+                                  key={index}
+                                  className="color-square"
+                                  style={{ backgroundColor: `rgb(${color.join(', ')})` }}
+                              ></span>
+                          ))}
+                        </span>
+                                                <span className="dropdown-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-chevron-down" viewBox="0 0 16 16">
+                            <path fillRule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                          </svg>
+                        </span>
+                                            </p>
                                             <select className="form-control">
                                                 {Object.entries(shapes).map(([key, shape]) => (
                                                     <option key={key} value={key}>
