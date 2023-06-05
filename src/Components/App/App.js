@@ -17,7 +17,7 @@ function App() {
     const navigate = useNavigate();
     const handleCrop = (image,detected) => {
         console.log(image);
-        setCroppedImage(URL.createObjectURL(image));
+        setCroppedImage(image);
         setDetectedObjects(detected);
         navigate('/cropped-image');
     };

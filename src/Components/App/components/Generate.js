@@ -122,44 +122,42 @@ function Generate({onCrop}) {
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // setImagePreview(URL.createObjectURL(image));
-        console.log("Form submitted:", {
-            image,
-            percentage
-        });
-        setLoading(true);
+
         try {
+            setLoading(true);
+
             const formData = new FormData();
             formData.append('image', image);
+
             let crop;
             if (imageCrop === 0) {
                 crop = 'none';
-            } else if (imageCrop === 1) { // image is tall
-                if (alignment === "") {
-                    crop = 'top';
-                } else {
-                    crop = alignment;
-                }
-            } else { // image is wide
-                if (alignment === "") {
-                    crop = 'left';
-                } else {
-                    crop = alignment;
-                }
+            } else if (imageCrop === 1) {
+                crop = alignment === "" ? 'top' : alignment;
+            } else {
+                crop = alignment === "" ? 'left' : alignment;
             }
-            formData.append('cropDetail', crop)
-            const response = await axios.post("http://localhost:777/cropImage", formData);
-            const detected = await axios.get("http://localhost:777/getDetectedObjects");
-            console.log(detected);
-            console.log(response.data);
-            onCrop(response.data,detected.data);
+            formData.append('cropDetail', crop);
+
+            const [croppedImageResponse, detectedObjectsResponse] = await Promise.all([
+                axios.post("http://theunseenview.org:777/cropImage", formData),
+                axios.get("http://theunseenview.org:777/getDetectedObjects")
+            ]);
+
+            const croppedImageData = croppedImageResponse.data;
+            console.log(croppedImageResponse);
+
+            const detectedObjects = detectedObjectsResponse.data;
+
+            onCrop(croppedImageData.imageDataUri, detectedObjects);
             toast.success('Image cropped successfully!');
         } catch (error) {
             console.log(error);
             onCrop(error);
-            toast.error('Image cropped failed!');
+            toast.error('Image cropping failed!');
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const isInputValid = (input) => {
