@@ -12,11 +12,13 @@ import GenerateHE from "./components/GenerateHE";
 import AboutHE from "./components/AboutHE";
 
 function App() {
-    const [generatedData, setGeneratedData] = useState(null);
+    const [croppedImage, setCroppedImage] = useState(null);
+    const [detectedObjects, setDetectedObjects] = useState(null);
     const navigate = useNavigate();
-    const handleCrop = (data) => {
-        console.log(data);
-        setGeneratedData(data);
+    const handleCrop = (image,detected) => {
+        console.log(image);
+        setCroppedImage(URL.createObjectURL(image));
+        setDetectedObjects(detected);
         navigate('/cropped-image');
     };
     return (
@@ -61,7 +63,7 @@ function App() {
 
                 <Route exact path="/generate" element={<Generate onCrop={handleCrop}/>}/>
                 <Route exact path="/he/generate" element={<GenerateHE onCrop={handleCrop}/>}/>
-                <Route exact path="/cropped-image" element={<CroppedImage generatedData={generatedData}/>}/>
+                <Route exact path="/cropped-image" element={<CroppedImage croppedImage={croppedImage} detected={detectedObjects}/>}/>
 
                 <Route exact path="/about" element={<About/>}/>
                 <Route exact path="/he/about" element={<AboutHE/>}/>

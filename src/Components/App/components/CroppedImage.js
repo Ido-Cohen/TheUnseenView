@@ -1,23 +1,22 @@
 import React from 'react';
-import download from "downloadjs";
 
-const CroppedImage = ({generatedImage}) => {
-    const handleDownload = () => {
-        download(generatedImage.stl, "generated_file.stl");
-    };
-
+const CroppedImage = ({ croppedImage, detected }) => {
     return (
         <div className="container mt-4">
             <h1 className="text-center mb-4">Generated Image</h1>
             <div className="row justify-content-center align-items-center">
                 <div className="col-md-6">
-                    {/*<img src={`data:image/png;base64,${generatedImage.png}`} className="img-fluid" alt="Generated" />*/}
+                    <img src={croppedImage} className="img-fluid" alt="Cropped" />
                 </div>
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            <h4 className="card-title">Download STL file</h4>
-                            <button className="btn btn-primary" onClick={handleDownload}>Download</button>
+                            <h4 className="card-title">Detected Data</h4>
+                            {Object.entries(detected).map(([label, colors]) => (
+                                <p key={label} className="card-text">
+                                    {label}: {colors.map(color => color.join(', ')).join(', ')}
+                                </p>
+                            ))}
                         </div>
                     </div>
                 </div>

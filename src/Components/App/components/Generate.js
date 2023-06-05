@@ -32,7 +32,7 @@ function Generate({onCrop}) {
             <div></div>
             <div></div>
             <div></div>
-            <p>Generating the 3D file. Please wait.</p>
+            <p>Detecting objects. Please wait.</p>
         </div>
     );
     const SpinnerOverlay = () => (
@@ -149,8 +149,10 @@ function Generate({onCrop}) {
             }
             formData.append('cropDetail', crop)
             const response = await axios.post("http://localhost:777/cropImage", formData);
+            const detected = await axios.get("http://localhost:777/getDetectedObjects");
+            console.log(detected);
             console.log(response.data);
-            onCrop(response.data);
+            onCrop(response.data,detected.data);
             toast.success('Image cropped successfully!');
         } catch (error) {
             console.log(error);
