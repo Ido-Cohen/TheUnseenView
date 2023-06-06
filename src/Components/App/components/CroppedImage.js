@@ -4,6 +4,7 @@ import './CroppedImage.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import seedrandom from 'seedrandom';
 
 const CroppedImage = ({ croppedImage, detected, onNext }) => {
     const [selectedOptions, setSelectedOptions] = useState({});
@@ -63,8 +64,8 @@ const CroppedImage = ({ croppedImage, detected, onNext }) => {
 
         // Create a random number generator with a fixed seed value
         const currentTimestamp = new Date().getTime().toString();
-        const seedValue = 'your_app_prefix' + currentTimestamp;
-        const rng = new Math.seedrandom(seedValue);
+        const seedValue = 'unseenView' + currentTimestamp;
+        const rng = new seedrandom(seedValue);
 
         const randomizedOptions = { ...selectedOptions };
 
