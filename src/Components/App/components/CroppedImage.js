@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import shapes from './constants/shapes';
 import './CroppedImage.css';
-import {useNavigate} from "react-router-dom";
-import axios from "axios";
-import {toast} from "react-toastify";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
-const CroppedImage = ({ croppedImage, detected,onNext }) => {
+const CroppedImage = ({ croppedImage, detected, onNext }) => {
     const [selectedOptions, setSelectedOptions] = useState({});
     const navigate = useNavigate();
+
     const handleOptionChange = (id, value) => {
         setSelectedOptions((prevOptions) => ({
             ...prevOptions,
@@ -26,21 +27,22 @@ const CroppedImage = ({ croppedImage, detected,onNext }) => {
         );
 
         // Make a POST request with Axios
-        axios.post('http://theunseenview.org:777/chosenPatterns', jsonContent,{
-            headers : {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(response => {
+        axios
+            .post('http://theunseenview.org:777/chosenPatterns', jsonContent, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) => {
                 // Handle the response from the server
                 console.log('Post request successful:', response.data);
-                toast.success("Image passed successfully");
+                toast.success('Image passed successfully');
                 onNext(response.data.imageDataUri);
             })
-            .catch(error => {
+            .catch((error) => {
                 // Handle any errors that occurred during the POST request
                 console.error('Post request failed:', error);
-                toast.error("Couldn't send the json");
+                toast.error("Couldn't send the JSON");
             });
     };
 
@@ -51,6 +53,23 @@ const CroppedImage = ({ croppedImage, detected,onNext }) => {
     const isNextButtonDisabled =
         Object.values(selectedOptions).some((value) => value === '') ||
         Object.keys(detected).some((id) => !selectedOptions[id]);
+
+    const handleRandomizeClick = () => {
+        const availableShapes = Object.keys(shapes).filter(
+            (shapeKey) => !Object.values(selectedOptions).includes(shapeKey)
+        );
+
+        Object.keys(detected).forEach((id) => {
+            const availableShapesCount = availableShapes.length;
+            const randomIndex = Math.floor(Math.random() * (availableShapesCount + 1)); // +1 for empty option
+            const selectedShape = availableShapes[randomIndex] || ''; // Select an empty option if no more shapes available
+            availableShapes.splice(randomIndex, 1); // Remove the selected shape from available shapes
+            setSelectedOptions((prevOptions) => ({
+                ...prevOptions,
+                [id]: selectedShape,
+            }));
+        });
+    };
 
     return (
         <div className="container mt-4">
@@ -99,20 +118,22 @@ const CroppedImage = ({ croppedImage, detected,onNext }) => {
                                 ))}
                             </div>
                             <div className="text-center">
+                                <button className="btn btn-primary mr-2" onClick={handleBackClick}>
+                                    Back
+                                </button>
                                 <button
                                     className="btn btn-primary mr-2"
-                                    onClick={handleBackClick}
+                                    onClick={handleRandomizeClick}
+                                    disabled={isNextButtonDisabled}
                                 >
-                                    Back
+                                    Randomize
                                 </button>
                                 <button
                                     className="btn btn-primary"
                                     onClick={handleNextClick}
                                     disabled={isNextButtonDisabled}
                                     title={
-                                        isNextButtonDisabled
-                                            ? 'You have to select all objects'
-                                            : 'Click to proceed to the next step'
+                                        isNextButtonDisabled ? 'You have to select all objects' : 'Click to proceed to the next step'
                                     }
                                 >
                                     Next
