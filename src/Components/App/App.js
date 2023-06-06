@@ -10,9 +10,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import CroppedImage from "./components/CroppedImage";
 import GenerateHE from "./components/GenerateHE";
 import AboutHE from "./components/AboutHE";
+import ImageGreyscale from "./components/ImageGreyscale";
 
 function App() {
     const [croppedImage, setCroppedImage] = useState(null);
+    const [imageGreyscale, setImageGreyscale] = useState(null);
     const [detectedObjects, setDetectedObjects] = useState(null);
     const navigate = useNavigate();
     const handleCrop = (image,detected) => {
@@ -21,41 +23,15 @@ function App() {
         setDetectedObjects(detected);
         navigate('/cropped-image');
     };
+
+    const handleNext = (image) => {
+        console.log(image);
+        setImageGreyscale(image);
+        navigate('/greyscale-image');
+    };
     return (
 
         <div className="container mt-4">
-            {/*<nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">*/}
-            {/*    <Link to="/about" className="navbar-brand">*/}
-            {/*        <img src={logo} alt="Logo" width="100" height="100" className="d-inline-block align-top"/>*/}
-            {/*        /!*Image App*!/*/}
-            {/*    </Link>*/}
-            {/*    <ul className="navbar-nav">*/}
-            {/*        <li className="nav-item h1 m-1">*/}
-            {/*            <Link to="/home" className="nav-link">*/}
-            {/*                Home*/}
-            {/*            </Link>*/}
-            {/*        </li>*/}
-            {/*        <li className="nav-item h1 m-1">*/}
-            {/*            <Link to="/generate" className="nav-link">*/}
-            {/*                Generate*/}
-            {/*            </Link>*/}
-            {/*        </li>*/}
-            {/*        <li className="nav-item h1 m-1">*/}
-            {/*            <Link to="/about" className="nav-link">*/}
-            {/*                About*/}
-            {/*            </Link>*/}
-            {/*        </li>*/}
-            {/*    </ul>*/}
-            {/*    <div className="dropdown">*/}
-            {/*        <button className="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">*/}
-            {/*            Language*/}
-            {/*        </button>*/}
-            {/*        <ul className="dropdown-menu" aria-labelledby="languageDropdown">*/}
-            {/*            <li><button className="dropdown-item" type="button">English</button></li>*/}
-            {/*            <li><button className="dropdown-item" type="button">Hebrew</button></li>*/}
-            {/*        </ul>*/}
-            {/*    </div>*/}
-            {/*</nav>*/}
             <MyNavbar/>
             <Routes>
                 <Route exact path="/he" element={<AboutHE/>}/>
@@ -63,7 +39,8 @@ function App() {
 
                 <Route exact path="/generate" element={<Generate onCrop={handleCrop}/>}/>
                 <Route exact path="/he/generate" element={<GenerateHE onCrop={handleCrop}/>}/>
-                <Route exact path="/cropped-image" element={<CroppedImage croppedImage={croppedImage} detected={detectedObjects}/>}/>
+                <Route exact path="/cropped-image" element={<CroppedImage croppedImage={croppedImage} detected={detectedObjects} onNext={handleNext}/>}/>
+                <Route exact path="/greyscale-image" element={<ImageGreyscale image={imageGreyscale}/>}/>
 
                 <Route exact path="/about" element={<About/>}/>
                 <Route exact path="/he/about" element={<AboutHE/>}/>
