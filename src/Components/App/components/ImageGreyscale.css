@@ -1,7 +1,15 @@
 .image-container {
-    position: relative;
-    max-width: 800px; /* Adjust the max-width as desired */
+    width: 100%;
+    max-width: none;
     margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
 }
 
 .form-control-range {

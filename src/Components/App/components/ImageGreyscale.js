@@ -41,7 +41,7 @@ const ImageGreyscale = ({ image }) => {
     };
 
     return (
-        <div className="container mt-4">
+        <div className="image-greyscale">
             <h1 className="text-center mb-4">Image Greyscale</h1>
             <div className="row justify-content-center">
                 <div className="col-md-6">
@@ -62,7 +62,19 @@ const ImageGreyscale = ({ image }) => {
                                     onMouseUp={handlePercentageBlur}
                                     className="form-control-range"
                                 />
-                                <span>{percentage}%</span>
+                                <div className="percentage-wrapper">
+                                    <span className="percentage-label">Percentage:</span>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={percentage}
+                                        onChange={handlePercentageChange}
+                                        onBlur={handlePercentageBlur}
+                                        className="percentage-input"
+                                    />
+                                    <span>%</span>
+                                </div>
                             </div>
                         </div>
                     </div>
