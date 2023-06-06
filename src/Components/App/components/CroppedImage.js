@@ -34,7 +34,7 @@ const CroppedImage = ({ croppedImage, detected }) => {
     };
 
     const handleBackClick = () => {
-        navigate('/');
+        navigate('/generate');
     };
 
     const isNextButtonDisabled =
