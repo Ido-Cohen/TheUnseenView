@@ -56,19 +56,22 @@ const CroppedImage = ({ croppedImage, detected, onNext }) => {
 
     const handleRandomizeClick = () => {
         const availableShapes = Object.keys(shapes).filter(
-            (shapeKey) => !Object.values(selectedOptions).includes(shapeKey)
+            (shapeKey) =>
+                shapeKey !== 'EMPTY' &&
+                !Object.values(selectedOptions).includes(shapeKey)
         );
 
         const randomizedOptions = { ...selectedOptions };
 
         Object.keys(detected).forEach((id) => {
             const selectedShape = randomizedOptions[id];
-            if (!selectedShape) {
-                const availableShapesCount = availableShapes.length;
-                const randomIndex = Math.floor(Math.random() * availableShapesCount);
+            if (!selectedShape && availableShapes.length > 0) {
+                const randomIndex = Math.floor(Math.random() * availableShapes.length);
                 const shapeToAssign = availableShapes[randomIndex];
                 randomizedOptions[id] = shapeToAssign;
                 availableShapes.splice(randomIndex, 1);
+            } else if (!selectedShape && availableShapes.length === 0) {
+                randomizedOptions[id] = 'EMPTY';
             }
         });
 
