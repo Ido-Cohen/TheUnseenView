@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import './ImageGreyscale.css';
 
 const ImageGreyscale = ({ image }) => {
     const [percentage, setPercentage] = useState(0);
     const [lastPercentage, setLastPercentage] = useState(0);
     const [greyscaleImage, setGreyscaleImage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handlePercentageChange = (e) => {
         setPercentage(e.target.value);
@@ -17,6 +19,8 @@ const ImageGreyscale = ({ image }) => {
     };
 
     const sendGetRequest = async () => {
+        setIsLoading(true);
+
         try {
             const response = await axios.get('http://theunseenview.org:777/grayscaled', {
                 params: {
@@ -28,13 +32,9 @@ const ImageGreyscale = ({ image }) => {
         } catch (error) {
             console.error('GET request failed:', error);
         }
-    };
 
-    useEffect(() => {
-        if (percentage !== lastPercentage) {
-            sendGetRequest();
-        }
-    }, [percentage]);
+        setIsLoading(false);
+    };
 
     const greyscaleStyle = {
         filter: `grayscale(${percentage}%)`,
@@ -47,10 +47,10 @@ const ImageGreyscale = ({ image }) => {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            {greyscaleImage ? (
-                                <img src={greyscaleImage} alt="Greyscale Image" className="img-fluid mb-3" />
+                            {isLoading ? (
+                                <div className="loader"></div>
                             ) : (
-                                <img src={image} alt="Original Image" className="img-fluid mb-3" />
+                                <img src={greyscaleImage ? greyscaleImage : image} alt="Image" className="img-fluid mb-3" />
                             )}
                             <div className="form-group">
                                 <input
@@ -60,7 +60,7 @@ const ImageGreyscale = ({ image }) => {
                                     step="1"
                                     value={percentage}
                                     onChange={handlePercentageChange}
-                                    onMouseLeave={handlePercentageBlur}
+                                    onMouseUp={handlePercentageBlur}
                                     className="form-control-range"
                                 />
                                 <span>{percentage}%</span>
