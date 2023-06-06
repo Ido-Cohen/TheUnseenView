@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ImageGreyscale = ({ image }) => {
@@ -9,20 +9,17 @@ const ImageGreyscale = ({ image }) => {
         setPercentage(e.target.value);
     };
 
-    const handlePercentageBlur = () => {
-        // Send GET request to fetch the greyscale image
-        axios.get('http://theunseenview.org:777/grayscaled', {
-            params: {
-                brightness: percentage,
-            },
-        })
-            .then(response => {
-                // Update the greyscale image state
-                setGreyscaleImage(response.data.imageDataUri);
-            })
-            .catch(error => {
-                console.error('GET request failed:', error);
+    const handlePercentageBlur = async () => {
+        try {
+            const response = await axios.get('http://theunseenview.org:777/grayscaled', {
+                params: {
+                    brightness: percentage,
+                },
             });
+            setGreyscaleImage(response.data.imageDataUri);
+        } catch (error) {
+            console.error('GET request failed:', error);
+        }
     };
 
     const greyscaleStyle = {
