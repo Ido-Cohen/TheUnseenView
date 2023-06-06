@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import shapes from './constants/shapes';
 import './CroppedImage.css';
 
-const CroppedImage = ({croppedImage, detected}) => {
+const CroppedImage = ({ croppedImage, detected }) => {
     const [selectedOptions, setSelectedOptions] = useState({});
 
     const handleOptionChange = (id, value) => {
@@ -16,7 +16,12 @@ const CroppedImage = ({croppedImage, detected}) => {
         // Do something when the next button is clicked
     };
 
-    const isNextButtonDisabled = Object.values(selectedOptions).some((value) => value === '') ||
+    const handleBackClick = () => {
+        // Do something when the back button is clicked
+    };
+
+    const isNextButtonDisabled =
+        Object.values(selectedOptions).some((value) => value === '') ||
         Object.keys(detected).some((id) => !selectedOptions[id]);
 
     return (
@@ -24,7 +29,7 @@ const CroppedImage = ({croppedImage, detected}) => {
             <h1 className="text-center mb-4">Generated Image</h1>
             <div className="row">
                 <div className="col-md-12 mb-4">
-                    <img src={croppedImage} className="img-fluid" alt="Cropped"/>
+                    <img src={croppedImage} className="img-fluid" alt="Cropped" />
                 </div>
                 <div className="col-md-8 offset-md-2">
                     <div className="card">
@@ -41,7 +46,7 @@ const CroppedImage = ({croppedImage, detected}) => {
                               <span
                                   key={index}
                                   className="color-square"
-                                  style={{backgroundColor: `rgb(${color.join(', ')})`}}
+                                  style={{ backgroundColor: `rgb(${color.join(', ')})` }}
                               ></span>
                           ))}
                         </span>
@@ -67,10 +72,20 @@ const CroppedImage = ({croppedImage, detected}) => {
                             </div>
                             <div className="text-center">
                                 <button
+                                    className="btn btn-primary mr-2"
+                                    onClick={handleBackClick}
+                                >
+                                    Back
+                                </button>
+                                <button
                                     className="btn btn-primary"
                                     onClick={handleNextClick}
                                     disabled={isNextButtonDisabled}
-                                    title={isNextButtonDisabled ? 'You have to select all objects' : ''}
+                                    title={
+                                        isNextButtonDisabled
+                                            ? 'You have to select all objects'
+                                            : 'Click to proceed to the next step'
+                                    }
                                 >
                                     Next
                                 </button>
