@@ -61,12 +61,17 @@ const CroppedImage = ({ croppedImage, detected, onNext }) => {
                 !Object.values(selectedOptions).includes(shapeKey)
         );
 
+        // Create a random number generator with a fixed seed value
+        const currentTimestamp = new Date().getTime().toString();
+        const seedValue = 'your_app_prefix' + currentTimestamp;
+        const rng = new Math.seedrandom(seedValue);
+
         const randomizedOptions = { ...selectedOptions };
 
         Object.keys(detected).forEach((id) => {
             const selectedShape = randomizedOptions[id];
             if (!selectedShape && availableShapes.length > 0) {
-                const randomIndex = Math.floor(Math.random() * availableShapes.length);
+                const randomIndex = Math.floor(rng() * availableShapes.length);
                 const shapeToAssign = availableShapes[randomIndex];
                 randomizedOptions[id] = shapeToAssign;
                 availableShapes.splice(randomIndex, 1);
