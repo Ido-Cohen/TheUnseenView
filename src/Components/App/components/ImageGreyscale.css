@@ -1,12 +1,11 @@
 .image-container {
     position: relative;
-    max-width: 600px;
+    max-width: 800px; /* Adjust the max-width as desired */
     margin: 0 auto;
 }
 
-.img-fluid {
-    max-width: 100%;
-    height: auto;
+.form-control-range {
+    width: 100%; /* Adjust the width as desired */
 }
 
 .loader-greyscale {
