@@ -11,7 +11,7 @@ const CroppedImage = ({ croppedImage, detected }) => {
             [id]: value,
         }));
     };
-    console.log(selectedOptions);
+
     const handleNextClick = () => {
         // Do something when the next button is clicked
     };
