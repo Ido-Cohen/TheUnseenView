@@ -1,4 +1,8 @@
 const shapes = {
+    EMPTY: {
+        name: "empty",
+        description: "Empty",
+    },
     TRIANGLES: {
         name: "triangles",
         description: "Triangles",

@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import shapes from './constants/shapes';
 import './CroppedImage.css';
 
 const CroppedImage = ({ croppedImage, detected }) => {
+    const [selectedOptions, setSelectedOptions] = useState({});
+
+    const handleOptionChange = (id, value) => {
+        setSelectedOptions((prevOptions) => ({
+            ...prevOptions,
+            [id]: value,
+        }));
+    };
+
+    const handleNextClick = () => {
+        // Do something when the next button is clicked
+    };
+
     return (
         <div className="container mt-4">
             <h1 className="text-center mb-4">Generated Image</h1>
@@ -15,7 +28,7 @@ const CroppedImage = ({ croppedImage, detected }) => {
                         <div className="card-body">
                             <h4 className="card-title">Detected Data</h4>
                             <div className="row">
-                                {Object.entries(detected).map(([label, colors], index) => (
+                                {Object.entries(detected).map(([label, colors]) => (
                                     <div key={label} className="col-md-4 mb-4">
                                         <div className="detected-object">
                                             <p className="card-text">
@@ -31,7 +44,13 @@ const CroppedImage = ({ croppedImage, detected }) => {
                         </span>
                                             </p>
                                             <div className="custom-select-arrow">
-                                                <select className="form-control" id={label}>
+                                                <select
+                                                    className="form-control"
+                                                    id={label}
+                                                    value={selectedOptions[label] || ''}
+                                                    onChange={(e) => handleOptionChange(label, e.target.value)}
+                                                >
+                                                    <option value="">Select an option</option>
                                                     {Object.entries(shapes).map(([key, shape]) => (
                                                         <option key={key} value={key}>
                                                             {shape.description}
@@ -42,6 +61,11 @@ const CroppedImage = ({ croppedImage, detected }) => {
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+                            <div className="text-center">
+                                <button className="btn btn-primary" onClick={handleNextClick}>
+                                    Next
+                                </button>
                             </div>
                         </div>
                     </div>
