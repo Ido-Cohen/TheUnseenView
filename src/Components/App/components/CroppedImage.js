@@ -64,8 +64,7 @@ const CroppedImage = ({ croppedImage, detected, onNext }) => {
 
         // Create a random number generator with a fixed seed value
         const currentTimestamp = new Date().getTime().toString();
-        const seedValue = 'unseenView' + currentTimestamp;
-        const rng = new seedrandom(seedValue);
+        const rng = new seedrandom(currentTimestamp);
 
         const randomizedOptions = { ...selectedOptions };
 
