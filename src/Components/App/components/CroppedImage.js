@@ -59,16 +59,20 @@ const CroppedImage = ({ croppedImage, detected, onNext }) => {
             (shapeKey) => !Object.values(selectedOptions).includes(shapeKey)
         );
 
+        const randomizedOptions = { ...selectedOptions };
+
         Object.keys(detected).forEach((id) => {
-            const availableShapesCount = availableShapes.length;
-            const randomIndex = Math.floor(Math.random() * (availableShapesCount + 1)); // +1 for empty option
-            const selectedShape = availableShapes[randomIndex] || ''; // Select an empty option if no more shapes available
-            availableShapes.splice(randomIndex, 1); // Remove the selected shape from available shapes
-            setSelectedOptions((prevOptions) => ({
-                ...prevOptions,
-                [id]: selectedShape,
-            }));
+            const selectedShape = randomizedOptions[id];
+            if (!selectedShape) {
+                const availableShapesCount = availableShapes.length;
+                const randomIndex = Math.floor(Math.random() * availableShapesCount);
+                const shapeToAssign = availableShapes[randomIndex];
+                randomizedOptions[id] = shapeToAssign;
+                availableShapes.splice(randomIndex, 1);
+            }
         });
+
+        setSelectedOptions(randomizedOptions);
     };
 
     return (
@@ -121,11 +125,7 @@ const CroppedImage = ({ croppedImage, detected, onNext }) => {
                                 <button className="btn btn-primary mr-2" onClick={handleBackClick}>
                                     Back
                                 </button>
-                                <button
-                                    className="btn btn-primary mr-2"
-                                    onClick={handleRandomizeClick}
-                                    disabled={isNextButtonDisabled}
-                                >
+                                <button className="btn btn-primary mr-2" onClick={handleRandomizeClick}>
                                     Randomize
                                 </button>
                                 <button
