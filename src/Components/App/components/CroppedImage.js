@@ -17,7 +17,7 @@ const CroppedImage = ({ croppedImage, detected }) => {
         const jsonContent = JSON.stringify(
             Object.entries(selectedOptions).reduce((result, [label, value]) => {
                 const [r, g, b] = detected[label][0]; // Get the RGB values from detected colors
-                const shape = shapes[value].description;
+                const shape = shapes[value].name;
                 result[label] = [[r, g, b], shape];
                 return result;
             }, {})
