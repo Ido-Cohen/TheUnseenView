@@ -33,6 +33,10 @@ const ImageGreyscale = ({ image }) => {
         }
     };
 
+    const handleNextClick = () => {
+        // Perform actions when next button is clicked
+    };
+
     const sendGetRequest = async () => {
         setIsLoading(true);
 
@@ -59,39 +63,40 @@ const ImageGreyscale = ({ image }) => {
         <div className="image-greyscale">
             <h1 className="text-center mb-4">Image Greyscale</h1>
             <div className="row justify-content-center">
-                    <div className="card">
-                        <div className="card-body">
-                            <div className="image-container">
-                                <img src={greyscaleImage ? greyscaleImage : image} alt="Image" className="img-fluid mb-3" />
-                                {isLoading && <div className="loader-greyscale"></div>}
-                            </div>
-                            <div className="form-group">
+                <div className="card">
+                    <div className="card-body">
+                        <div className="image-container">
+                            <img src={greyscaleImage ? greyscaleImage : image} alt="Image" className="img-fluid mb-3" />
+                            {isLoading && <div className="loader-greyscale"></div>}
+                        </div>
+                        <div className="form-group">
+                            <input
+                                type="range"
+                                min="0"
+                                max="100"
+                                step="1"
+                                value={percentage}
+                                onChange={handlePercentageChange}
+                                onMouseUp={handlePercentageBlur}
+                                className="form-control-range"
+                            />
+                            <div className="percentage-wrapper">
+                                <span className="percentage-label">Percentage:</span>
                                 <input
-                                    type="range"
+                                    type="number"
                                     min="0"
                                     max="100"
-                                    step="1"
                                     value={percentage}
                                     onChange={handlePercentageChange}
-                                    onMouseUp={handlePercentageBlur}
-                                    className="form-control-range"
+                                    onBlur={handlePercentageBlur}
+                                    onKeyPress={handlePercentageKeyPress}
+                                    className="percentage-input"
                                 />
-                                <div className="percentage-wrapper">
-                                    <span className="percentage-label">Percentage:</span>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        max="100"
-                                        value={percentage}
-                                        onChange={handlePercentageChange}
-                                        onBlur={handlePercentageBlur}
-                                        onKeyPress={handlePercentageKeyPress}
-                                        className="percentage-input"
-                                    />
-                                    <span>%</span>
-                                </div>
+                                <span>%</span>
                             </div>
                         </div>
+                        <button className="btn btn-primary" onClick={handleNextClick}>Next</button>
+                    </div>
                 </div>
             </div>
         </div>
