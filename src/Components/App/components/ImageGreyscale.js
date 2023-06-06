@@ -18,6 +18,12 @@ const ImageGreyscale = ({ image }) => {
         }
     };
 
+    const handlePercentageKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handlePercentageBlur();
+        }
+    };
+
     const sendGetRequest = async () => {
         setIsLoading(true);
 
@@ -44,7 +50,6 @@ const ImageGreyscale = ({ image }) => {
         <div className="image-greyscale">
             <h1 className="text-center mb-4">Image Greyscale</h1>
             <div className="row justify-content-center">
-                <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
                             <div className="image-container">
@@ -71,13 +76,13 @@ const ImageGreyscale = ({ image }) => {
                                         value={percentage}
                                         onChange={handlePercentageChange}
                                         onBlur={handlePercentageBlur}
+                                        onKeyPress={handlePercentageKeyPress}
                                         className="percentage-input"
                                     />
                                     <span>%</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
