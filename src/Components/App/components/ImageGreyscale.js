@@ -47,11 +47,10 @@ const ImageGreyscale = ({ image }) => {
                 <div className="col-md-6">
                     <div className="card">
                         <div className="card-body">
-                            {isLoading ? (
-                                <div className="loader"></div>
-                            ) : (
+                            <div className="image-container">
                                 <img src={greyscaleImage ? greyscaleImage : image} alt="Image" className="img-fluid mb-3" />
-                            )}
+                                {isLoading && <div className="loader"></div>}
+                            </div>
                             <div className="form-group">
                                 <input
                                     type="range"
