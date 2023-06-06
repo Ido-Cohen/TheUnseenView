@@ -11,10 +11,12 @@ const CroppedImage = ({ croppedImage, detected }) => {
             [id]: value,
         }));
     };
-
+    console.log(selectedOptions);
     const handleNextClick = () => {
         // Do something when the next button is clicked
     };
+
+    const isNextButtonDisabled = Object.values(selectedOptions).some((value) => value === '');
 
     return (
         <div className="container mt-4">
@@ -63,7 +65,12 @@ const CroppedImage = ({ croppedImage, detected }) => {
                                 ))}
                             </div>
                             <div className="text-center">
-                                <button className="btn btn-primary" onClick={handleNextClick}>
+                                <button
+                                    className="btn btn-primary"
+                                    onClick={handleNextClick}
+                                    disabled={isNextButtonDisabled}
+                                    title={isNextButtonDisabled ? 'You have to select all objects' : ''}
+                                >
                                     Next
                                 </button>
                             </div>
