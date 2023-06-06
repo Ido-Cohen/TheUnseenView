@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import shapes from './constants/shapes';
 import './CroppedImage.css';
+import {useNavigate} from "react-router-dom";
 
 const CroppedImage = ({ croppedImage, detected }) => {
     const [selectedOptions, setSelectedOptions] = useState({});
-
+    const navigate = useNavigate();
     const handleOptionChange = (id, value) => {
         setSelectedOptions((prevOptions) => ({
             ...prevOptions,
@@ -13,11 +14,27 @@ const CroppedImage = ({ croppedImage, detected }) => {
     };
 
     const handleNextClick = () => {
-        // Do something when the next button is clicked
+        const jsonContent = JSON.stringify(
+            Object.entries(selectedOptions).reduce((result, [label, value]) => {
+                const [r, g, b] = detected[label][0]; // Get the RGB values from detected colors
+                const shape = shapes[value].description;
+                result[label] = [[r, g, b], shape];
+                return result;
+            }, {})
+        );
+
+        // Create a JSON file with the content
+        const element = document.createElement('a');
+        const file = new Blob([jsonContent], { type: 'application/json' });
+        element.href = URL.createObjectURL(file);
+        element.download = 'detected_objects.json';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     };
 
     const handleBackClick = () => {
-        // Do something when the back button is clicked
+        navigate('/');
     };
 
     const isNextButtonDisabled =
