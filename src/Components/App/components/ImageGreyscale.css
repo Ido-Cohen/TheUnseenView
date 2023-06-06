@@ -1,5 +1,12 @@
 .image-container {
     position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
 }
 
 .loader-greyscale {
