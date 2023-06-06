@@ -9,7 +9,16 @@ const ImageGreyscale = ({ image }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const handlePercentageChange = (e) => {
-        setPercentage(e.target.value);
+        let value = e.target.value;
+
+        // Ensure the value is within the valid range
+        if (value < 0) {
+            value = 0;
+        } else if (value > 100) {
+            value = 100;
+        }
+
+        setPercentage(value);
     };
 
     const handlePercentageBlur = () => {
