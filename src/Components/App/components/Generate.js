@@ -113,10 +113,8 @@ function Generate({onCrop}) {
             }
             formData.append('cropDetail', crop);
 
-            const [croppedImageResponse, detectedObjectsResponse] = await Promise.all([
-                axios.post("http://theunseenview.org:777/cropImage", formData),
-                axios.get("http://theunseenview.org:777/getDetectedObjects")
-            ]);
+            const croppedImageResponse = await axios.post("http://theunseenview.org:777/cropImage", formData);
+            const detectedObjectsResponse = await axios.get("http://theunseenview.org:777/getDetectedObjects");
 
             const croppedImageData = croppedImageResponse.data;
             console.log(croppedImageResponse);
@@ -166,7 +164,7 @@ function Generate({onCrop}) {
                     />
 
                     <Button
-                        className={"mt-3"}
+                        className={"mt-3 eladTheBest"}
                         variant="primary"
                         type="submit"
                         disabled={!isFormValid}>

@@ -11,9 +11,12 @@ import CroppedImage from "./components/CroppedImage";
 import GenerateHE from "./components/GenerateHE";
 import AboutHE from "./components/AboutHE";
 import ImageGreyscale from "./components/ImageGreyscale";
+import LegendAttachment from "./components/LegendAttachment";
+import FinalStep from "./components/FinalStep";
 
 function App() {
     const [croppedImage, setCroppedImage] = useState(null);
+    const [legendImage, setLegendImage] = useState(null);
     const [imageGreyscale, setImageGreyscale] = useState(null);
     const [detectedObjects, setDetectedObjects] = useState(null);
     const navigate = useNavigate();
@@ -29,6 +32,19 @@ function App() {
         setImageGreyscale(image);
         navigate('/greyscale-image');
     };
+
+    const handleLegendNext = (image) => {
+        console.log(image);
+        setLegendImage(image);
+        navigate('/legend-attachment');
+    };
+
+    const handleGenerateLithophan = (image) => {
+        console.log(image);
+        setLegendImage(image);
+        navigate('/finalize');
+    };
+
     return (
 
         <div className="container mt-4">
@@ -40,7 +56,9 @@ function App() {
                 <Route exact path="/generate" element={<Generate onCrop={handleCrop}/>}/>
                 <Route exact path="/he/generate" element={<GenerateHE onCrop={handleCrop}/>}/>
                 <Route exact path="/cropped-image" element={<CroppedImage croppedImage={croppedImage} detected={detectedObjects} onNext={handleNext}/>}/>
-                <Route exact path="/greyscale-image" element={<ImageGreyscale image={imageGreyscale}/>}/>
+                <Route exact path="/greyscale-image" element={<ImageGreyscale image={imageGreyscale} onNext={handleLegendNext}/>}/>
+                <Route exact path="/legend-attachment" element={<LegendAttachment image={legendImage} onGenerate={handleGenerateLithophan}/>}/>
+                <Route exact path="/finalize" element={<FinalStep image={legendImage}/>}/>
 
                 <Route exact path="/about" element={<About/>}/>
                 <Route exact path="/he/about" element={<AboutHE/>}/>

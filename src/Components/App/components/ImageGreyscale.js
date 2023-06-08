@@ -1,12 +1,46 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './ImageGreyscale.css';
+import {useNavigate} from "react-router-dom";
+import {toast} from "react-toastify";
 
-const ImageGreyscale = ({ image }) => {
+const ImageGreyscale = ({ image,onNext }) => {
     const [percentage, setPercentage] = useState(0);
     const [lastPercentage, setLastPercentage] = useState(0);
     const [greyscaleImage, setGreyscaleImage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    const Loader = () => (
+        <div className="loader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <p>Detecting objects. Please wait.</p>
+        </div>
+    );
+
+    const SpinnerOverlay = () => (
+        <div
+            style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                zIndex: 9999,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            <Loader/>
+        </div>
+    );
+
 
     const handlePercentageChange = (e) => {
         let value = e.target.value;
@@ -33,8 +67,19 @@ const ImageGreyscale = ({ image }) => {
         }
     };
 
-    const handleNextClick = () => {
-        // Perform actions when next button is clicked
+    const handleNextClick = async () => {
+        try {
+            setLoading(true);
+            const croppedImageResponse = await axios.get("http://theunseenview.org:777/legendAttached").then(response => response.data.imageDataUri);
+            console.log(croppedImageResponse);
+            onNext(croppedImageResponse);
+            toast.success('Got image legend successfully!');
+        } catch (error) {
+            console.log(error);
+            toast.error('Image legend failed!');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const sendGetRequest = async () => {
@@ -59,7 +104,8 @@ const ImageGreyscale = ({ image }) => {
         filter: `grayscale(${percentage}%)`,
     };
 
-    return (
+    return (<>
+        {loading && <SpinnerOverlay/>}
         <div className="image-greyscale">
             <h1 className="text-center mb-4">Image Greyscale</h1>
             <div className="row justify-content-center">
@@ -95,11 +141,14 @@ const ImageGreyscale = ({ image }) => {
                                 <span>%</span>
                             </div>
                         </div>
-                        <button className="btn btn-primary" onClick={handleNextClick}>Next</button>
+                        <div className="d-flex justify-content-end"> {/* Use d-flex justify-content-end class */}
+                            <button className="btn btn-primary eladTheBest" onClick={handleNextClick}>Next</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

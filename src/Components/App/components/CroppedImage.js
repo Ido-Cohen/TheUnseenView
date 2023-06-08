@@ -28,8 +28,7 @@ const CroppedImage = ({ croppedImage, detected, onNext }) => {
         );
 
         // Make a POST request with Axios
-        axios
-            .post('http://theunseenview.org:777/chosenPatterns', jsonContent, {
+        axios.post('http://theunseenview.org:777/chosenPatterns', jsonContent, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -130,14 +129,14 @@ const CroppedImage = ({ croppedImage, detected, onNext }) => {
                                 ))}
                             </div>
                             <div className="text-center">
-                                <button className="btn btn-primary mr-2" onClick={handleBackClick}>
+                                <button className="btn btn-primary mr-2 eladTheBest" onClick={handleBackClick}>
                                     Back
                                 </button>
-                                <button className="btn btn-primary mr-2" onClick={handleRandomizeClick}>
+                                <button className="btn btn-primary mr-2 eladTheBest" onClick={handleRandomizeClick}>
                                     Randomize
                                 </button>
                                 <button
-                                    className="btn btn-primary"
+                                    className="btn btn-primary eladTheBest"
                                     onClick={handleNextClick}
                                     disabled={isNextButtonDisabled}
                                     title={
