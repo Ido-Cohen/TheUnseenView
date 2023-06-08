@@ -5,7 +5,7 @@ import {Dropdown, DropdownButton} from "react-bootstrap";
 import {IL, US} from 'country-flag-icons/react/3x2'
 
 const Navbar = () => {
-    const [language, setLanguage] = useState("Hebrew");
+    const [language, setLanguage] = useState("English");
     const navigate = useNavigate();
     const handleLanguageChange = (lang) => {
         if (language !== lang) {

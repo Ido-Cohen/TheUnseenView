@@ -6,21 +6,13 @@ import {toast} from 'react-toastify';
 import VerticalAlignmentComponent from "./VerticalAlignmentComponent";
 
 function Generate({onCrop}) {
-    // const [height, setHeight] = useState("");
-    // const [width, setWidth] = useState("");
     const [imagePreview, setImagePreview] = useState("");
     const [alignment, setAlignment] = useState("");
     const [imageCrop, setImageCrop] = useState(null);
-    // const [depth, setDepth] = useState("");
     const [loading, setLoading] = useState(false);
-    // const [maxObjects, setMaxObjects] = useState("");
     const [image, setImage] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [percentage, setPercentage] = useState(0);
 
-    const handlePercentageChange = (event) => {
-        setPercentage(event.target.value);
-    };
 
     const handleAlignment = (data) => {
         setAlignment(data);
@@ -54,21 +46,9 @@ function Generate({onCrop}) {
         </div>
     );
     const handleInputChange = (event) => {
-        const {name, value} = event.target;
+        const {name} = event.target;
 
         switch (name) {
-            // case "height":
-            //     setHeight(value);
-            //     break;
-            // case "width":
-            //     setWidth(value);
-            //     break;
-            // case "depth":
-            //     setDepth(value);
-            //     break;
-            // case "maxObjects":
-            //     setMaxObjects(value);
-            //     break;
             case "image":
                 setImage(event.target.files[0]);
                 break;
@@ -76,12 +56,6 @@ function Generate({onCrop}) {
                 break;
         }
     };
-    // const handleImageChange = (event) => {
-    //     console.log(event)
-    //     if (event.target.files && event.target.files[0]) {
-    //         const image = event.target.files[0];
-    //         setImagePreview(URL.createObjectURL(image));
-    //     }
     function checkPicDimension(width, height) {
         const ratio = width / height;
         console.log(ratio)
@@ -164,20 +138,10 @@ function Generate({onCrop}) {
         return input !== "";
     };
 
-    // const isFormInputsValid = () => {
-    //     return (
-    //         isInputValid(height) &&
-    //         isInputValid(width) &&
-    //         isInputValid(depth) &&
-    //         isInputValid(maxObjects)
-    //     );
-    // };
-
     const handleFormValidation = () => {
         console.log(imageCrop)
         setIsFormValid(isInputValid(image));
     };
-    console.log(" aligment " + alignment);
 
     return (
         <>
@@ -185,84 +149,22 @@ function Generate({onCrop}) {
 
             <Form onSubmit={handleSubmit} className="p-4 rounded-lg bg-light">
                 <h3 className="mb-4">Image Form</h3>
-                {/*<Form.Group controlId="height">*/}
-                {/*    <Form.Label>Height</Form.Label>*/}
-                {/*    <Form.Control*/}
-                {/*        type="text"*/}
-                {/*        name="height"*/}
-                {/*        placeholder="Enter height"*/}
-                {/*        value={height}*/}
-                {/*        onChange={(e) => {*/}
-                {/*            handleInputChange(e);*/}
-                {/*            handleFormValidation();*/}
-                {/*        }}*/}
-                {/*    />*/}
-                {/*</Form.Group>*/}
-                {/*<Form.Group controlId="width">*/}
-                {/*    <Form.Label>Width</Form.Label>*/}
-                {/*    <Form.Control*/}
-                {/*        type="text"*/}
-                {/*        name="width"*/}
-                {/*        placeholder="Enter width"*/}
-                {/*        value={width}*/}
-                {/*        onChange={(e) => {*/}
-                {/*            handleInputChange(e);*/}
-                {/*            handleFormValidation();*/}
-                {/*        }}*/}
-                {/*    />*/}
-                {/*</Form.Group>*/}
-                {/*<Form.Group controlId="depth">*/}
-                {/*    <Form.Label>Depth</Form.Label>*/}
-                {/*    <Form.Control*/}
-                {/*        type="text"*/}
-                {/*        name="depth"*/}
-                {/*        placeholder="Enter depth"*/}
-                {/*        value={depth}*/}
-                {/*        onChange={(e) => {*/}
-                {/*            handleInputChange(e);*/}
-                {/*            handleFormValidation();*/}
-                {/*        }}*/}
-                {/*    />*/}
-                {/*</Form.Group>*/}
-                {/*<Form.Group controlId="maxObjects">*/}
-                {/*    <Form.Label>Max Objects</Form.Label>*/}
-                {/*    <Form.Control*/}
-                {/*        type="text"*/}
-                {/*        name="maxObjects"*/}
-                {/*        placeholder="Enter max objects"*/}
-                {/*        value={maxObjects}*/}
-                {/*        onChange={(e) => {*/}
-                {/*            handleInputChange(e);*/}
-                {/*            handleFormValidation();*/}
-                {/*        }}*/}
-                {/*    />*/}
-                {/*</Form.Group>*/}
-                {/*<Form.Group controlId="formPercentageSlider">*/}
-                {/*    <Form.Label>Background brightness level</Form.Label>*/}
-                {/*    <div className="d-flex align-items-center">*/}
-                {/*        <div className="mr-2">{percentage}%</div>*/}
-                {/*        <input*/}
-                {/*            type="range"*/}
-                {/*            min="0"*/}
-                {/*            max="100"*/}
-                {/*            step="1"*/}
-                {/*            value={percentage}*/}
-                {/*            onChange={handlePercentageChange}*/}
-                {/*            className="form-control-range flex-grow-1"*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*</Form.Group>*/}
+                <Form.Group controlId="description">
+                    <Form.Text style={{ fontSize: '24px'}}>Please select only .jpg or .jpeg images.</Form.Text>
+                </Form.Group>
                 <Form.Group controlId="image">
                     <Form.Label>Image</Form.Label>
                     <Form.Control
                         type="file"
                         name="image"
+                        accept=".jpg, .jpeg"
                         onChange={(e) => {
                             handleInputChange(e);
                             handleImageChange(e);
                             handleFormValidation();
                         }}
                     />
+
                     <Button
                         className={"mt-3"}
                         variant="primary"
