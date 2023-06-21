@@ -4,7 +4,7 @@ import './ImageGreyscale.css';
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 
-const ImageGreyscale = ({ image,onNext }) => {
+const ImageGreyscaleHE = ({ image,onNext }) => {
     const [percentage, setPercentage] = useState(85);
     const [lastPercentage, setLastPercentage] = useState(0);
     const [greyscaleImage, setGreyscaleImage] = useState('');
@@ -107,52 +107,52 @@ const ImageGreyscale = ({ image,onNext }) => {
         filter: `grayscale(${percentage}%)`,
     };
 
-    return (<>
-        {loading && <SpinnerOverlay/>}
-        <div className="image-greyscale">
-            <h1 className="text-center mb-4">Image Greyscale</h1>
-            <div className="row justify-content-center">
-                <div className="card">
-                    <div className="card-body">
-                        <div className="image-container">
-                            <img src={greyscaleImage ? greyscaleImage : image} alt="Image" className="img-fluid mb-3" />
-                            {isLoading && <div className="loader-greyscale"></div>}
-                        </div>
-                        <div className="form-group">
-                            <input
-                                type="range"
-                                min="0"
-                                max="100"
-                                step="1"
-                                value={percentage}
-                                onChange={handlePercentageChange}
-                                onMouseUp={handlePercentageBlur}
-                                className="form-control-range"
-                            />
-                            <div className="percentage-wrapper">
-                                <span className="percentage-label">Percentage:</span>
+    return (<div dir={'rtl'}>
+            {loading && <SpinnerOverlay/>}
+            <div className="image-greyscale">
+                <h1 className="text-center mb-4">בהירות הרקע</h1>
+                <div className="row justify-content-center">
+                    <div className="card">
+                        <div className="card-body">
+                            <div className="image-container">
+                                <img src={greyscaleImage ? greyscaleImage : image} alt="Image" className="img-fluid mb-3" />
+                                {isLoading && <div className="loader-greyscale"></div>}
+                            </div>
+                            <div className="form-group">
                                 <input
-                                    type="number"
+                                    type="range"
                                     min="0"
                                     max="100"
+                                    step="1"
                                     value={percentage}
                                     onChange={handlePercentageChange}
-                                    onBlur={handlePercentageBlur}
-                                    onKeyPress={handlePercentageKeyPress}
-                                    className="percentage-input"
+                                    onMouseUp={handlePercentageBlur}
+                                    className="form-control-range"
                                 />
-                                <span>%</span>
+                                <div className="percentage-wrapper">
+                                    <span className="percentage-label">אחוזים:</span>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={percentage}
+                                        onChange={handlePercentageChange}
+                                        onBlur={handlePercentageBlur}
+                                        onKeyPress={handlePercentageKeyPress}
+                                        className="percentage-input"
+                                    />
+                                    <span>%</span>
+                                </div>
                             </div>
-                        </div>
-                        <div className="d-flex justify-content-end"> {/* Use d-flex justify-content-end class */}
-                            <button className="btn btn-primary eladTheBest" onClick={handleNextClick}>Next</button>
+                            <div className="d-flex justify-content-end"> {/* Use d-flex justify-content-end class */}
+                                <button className="btn btn-primary eladTheBest" onClick={handleNextClick}>לדף הבא</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </>
     );
 };
 
-export default ImageGreyscale;
+export default ImageGreyscaleHE;

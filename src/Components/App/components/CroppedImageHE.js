@@ -1,35 +1,23 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import shapes from './constants/shapes';
 import './CroppedImage.css';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 import seedrandom from 'seedrandom';
 
-const CroppedImage = ({croppedImage, detected, onNext}) => {
+const CroppedImageHE = ({ croppedImage, detected, onNext }) => {
     const [selectedOptions, setSelectedOptions] = useState({});
     const navigate = useNavigate();
 
     const handleOptionChange = (id, value) => {
-        setSelectedOptions((prevOptions) => {
-            const updatedOptions = {...prevOptions};
-
-            if (value === '') {
-                delete updatedOptions[id];
-            } else {
-                updatedOptions[id] = value;
-            }
-
-            return updatedOptions;
-        });
+        setSelectedOptions((prevOptions) => ({
+            ...prevOptions,
+            [id]: value,
+        }));
     };
 
     const handleNextClick = () => {
-        Object.keys(selectedOptions).forEach((key) => {
-            if (selectedOptions[key] === 'EMPTY') {
-                delete selectedOptions[key];
-            }
-        });
         const jsonContent = JSON.stringify(
             Object.entries(selectedOptions).reduce((result, [label, value]) => {
                 const [r, g, b] = detected[label][0]; // Get the RGB values from detected colors
@@ -41,10 +29,10 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
 
         // Make a POST request with Axios
         axios.post('http://theunseenview.org:777/chosenPatterns', jsonContent, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
             .then((response) => {
                 // Handle the response from the server
                 console.log('Post request successful:', response.data);
@@ -67,87 +55,59 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
         Object.keys(detected).some((id) => !selectedOptions[id]);
 
     const handleRandomizeClick = () => {
-        setSelectedOptions({});
+        const availableShapes = Object.keys(shapes).filter(
+            (shapeKey) =>
+                shapeKey !== 'EMPTY' &&
+                !Object.values(selectedOptions).includes(shapeKey)
+        );
 
-        setTimeout(() => {
-            setSelectedOptions((prevOptions) => {
-                let availableShapes = Object.keys(shapes).filter(
-                    (shapeKey) => shapeKey !== 'EMPTY' && !Object.values(prevOptions).includes(shapeKey)
-                );
+        // Create a random number generator with a fixed seed value
+        const currentTimestamp = new Date().getTime().toString();
+        const rng = new seedrandom(currentTimestamp);
 
-                const currentTimestamp = new Date().getTime().toString();
-                const rng = new seedrandom(currentTimestamp);
+        const randomizedOptions = { ...selectedOptions };
 
-                let newOptions = {};
+        Object.keys(detected).forEach((id) => {
+            const selectedShape = randomizedOptions[id];
+            if (!selectedShape && availableShapes.length > 0) {
+                const randomIndex = Math.floor(rng() * availableShapes.length);
+                const shapeToAssign = availableShapes[randomIndex];
+                randomizedOptions[id] = shapeToAssign;
+                availableShapes.splice(randomIndex, 1);
+            } else if (!selectedShape && availableShapes.length === 0) {
+                randomizedOptions[id] = 'EMPTY';
+            }
+        });
 
-                const ids = Object.keys(detected);
-                // Randomly shuffle the IDs array
-                for (let i = ids.length - 1; i > 0; i--) {
-                    const j = Math.floor(rng() * (i + 1));
-                    [ids[i], ids[j]] = [ids[j], ids[i]];
-                }
-                if (availableShapes.length >= 6) {
-                    // let length = ids.length < 6 ? ids.length : 0;
-                    for (let i = 0; i < 6; i++) {
-                        const randomIndex = Math.floor(rng() * availableShapes.length);
-                        newOptions[ids[i]] = availableShapes[randomIndex];
-                        availableShapes.splice(randomIndex, 1);
-                    }
-                }
-                console.log(newOptions);
-                for (let i = Object.keys(newOptions).length; i < ids.length; i++) {
-                    newOptions[ids[i]] = 'EMPTY';
-                }
-
-                return newOptions;
-            });
-        }, 0);
-    };
-
-    const isDisabled = (selectedOptions) => {
-        const nonEmptyOptions = Object.values(selectedOptions).filter(option => option !== 'EMPTY');
-        return nonEmptyOptions.length >= 6;
+        setSelectedOptions(randomizedOptions);
     };
 
     return (
-        <div className="container mt-4">
+        <div className="container mt-4" dir={'rtl'}>
             <h1 className="text-center mb-4">Generated Image</h1>
             <div className="row">
                 <div className="col-md-12 mb-4">
-                    <img src={croppedImage} className="img-fluid" alt="Cropped"/>
+                    <img src={croppedImage} className="img-fluid" alt="Cropped" />
                 </div>
                 <div className="col-md-8 offset-md-2">
                     <div className="card">
                         <div className="card-body">
                             <h4 className="card-title">Detected Data</h4>
                             <div className="row">
-                                {Object.entries(detected).map(([label, colors], index) => (
+                                {Object.entries(detected).map(([label, colors]) => (
                                     <div key={label} className="col-md-4 mb-4">
                                         <div className="detected-object">
                                             <p className="card-text">
-                                                <span className="object-name" style={{
-                                                    fontSize: '20px',
-                                                    textDecoration: 'underline'
-                                                }}>{label.charAt(0).toUpperCase() + label.slice(1)}:</span>
+                                                <span className="object-name">{label}:</span>
                                                 <span className="color-squares">
-                      {colors.map((color, colorIndex) => (
-                          <span
-                              key={colorIndex}
-                              className="color-square"
-                              style={{backgroundColor: `rgb(${color.join(', ')})`}}
-                          ></span>
-                      ))}
-
-                                                    {selectedOptions[label] && selectedOptions[label] !== 'EMPTY' && colors.map((color, colorIndex) => (
-
-                                                        <img
-                                                            className="shape-image"
-                                                            src={shapes[selectedOptions[label]].image}
-                                                            alt={selectedOptions[label]}
-                                                            style={{width: '60px', height: '60px'}}
-                                                        />
-                                                    ))}
-                    </span>
+                          {colors.map((color, index) => (
+                              <span
+                                  key={index}
+                                  className="color-square"
+                                  style={{ backgroundColor: `rgb(${color.join(', ')})` }}
+                              ></span>
+                          ))}
+                        </span>
                                             </p>
                                             <div className="custom-select-arrow">
                                                 <select
@@ -155,7 +115,6 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
                                                     id={label}
                                                     value={selectedOptions[label] || ''}
                                                     onChange={(e) => handleOptionChange(label, e.target.value)}
-                                                    disabled={isDisabled(selectedOptions) && (selectedOptions[label] === 'EMPTY' || !selectedOptions[label])}
                                                 >
                                                     <option value="">Select an option</option>
                                                     {Object.entries(shapes).map(([key, shape]) => (
@@ -181,9 +140,7 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
                                     onClick={handleNextClick}
                                     disabled={isNextButtonDisabled}
                                     title={
-                                        isNextButtonDisabled
-                                            ? 'You have to select all objects'
-                                            : 'Click to proceed to the next step'
+                                        isNextButtonDisabled ? 'You have to select all objects' : 'Click to proceed to the next step'
                                     }
                                 >
                                     Next
@@ -197,4 +154,4 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
     );
 };
 
-export default CroppedImage;
+export default CroppedImageHE;

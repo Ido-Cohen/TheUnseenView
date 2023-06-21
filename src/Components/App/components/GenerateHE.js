@@ -3,20 +3,19 @@ import {Button, Form} from "react-bootstrap";
 import axios from "axios";
 import '../../../loader.css';
 import {toast} from 'react-toastify';
+import VerticalAlignmentComponent from "./VerticalAlignmentComponent";
 
-function Generate({onCrop}) {
-    const [height, setHeight] = useState("");
-    const [width, setWidth] = useState("");
+function GenerateHE({onCrop}) {
     const [imagePreview, setImagePreview] = useState("");
-    const [depth, setDepth] = useState("");
+    const [alignment, setAlignment] = useState("");
+    const [imageCrop, setImageCrop] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [maxObjects, setMaxObjects] = useState("");
     const [image, setImage] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
-    const [percentage, setPercentage] = useState(0);
 
-    const handlePercentageChange = (event) => {
-        setPercentage(event.target.value);
+
+    const handleAlignment = (data) => {
+        setAlignment(data);
     };
 
     const Loader = () => (
@@ -25,7 +24,7 @@ function Generate({onCrop}) {
             <div></div>
             <div></div>
             <div></div>
-            <p>Generating the 3D file. Please wait.</p>
+            <p>Detecting objects. Please wait.</p>
         </div>
     );
     const SpinnerOverlay = () => (
@@ -47,21 +46,9 @@ function Generate({onCrop}) {
         </div>
     );
     const handleInputChange = (event) => {
-        const {name, value} = event.target;
+        const {name} = event.target;
 
         switch (name) {
-            case "height":
-                setHeight(value);
-                break;
-            case "width":
-                setWidth(value);
-                break;
-            case "depth":
-                setDepth(value);
-                break;
-            case "maxObjects":
-                setMaxObjects(value);
-                break;
             case "image":
                 setImage(event.target.files[0]);
                 break;
@@ -69,52 +56,89 @@ function Generate({onCrop}) {
                 break;
         }
     };
-    const handleImageChange = (event) => {
-        console.log(event)
-        if (event.target.files && event.target.files[0]) {
-            const image = event.target.files[0];
-            setImagePreview(URL.createObjectURL(image));
+    function checkPicDimension(width, height) {
+        const ratio = width / height;
+        console.log(ratio)
+        if (ratio === 16 / 9) {
+            setImageCrop(0);
+            setIsFormValid(true)
+        } else if (ratio > 16 / 9) {
+            setImageCrop(1);
+            toast.warn('The image is too wide!');
+        } else {
+            setImageCrop(-1);
+            toast.warn('The image is too tall!');
         }
     }
+
+    // }
+    const handleImageChange = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            const image = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const imageUrl = e.target.result;
+                const img = new Image();
+
+                img.onload = () => {
+                    const {naturalWidth: width, naturalHeight: height} = img;
+                    checkPicDimension(width, height);
+                    console.log(`Image dimensions: ${width}x${height}`);
+
+                };
+                img.src = imageUrl;
+                setImagePreview(imageUrl);
+            };
+
+            reader.readAsDataURL(image);
+        }
+    };
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // setImagePreview(URL.createObjectURL(image));
-        console.log("Form submitted:", {
-            height,
-            width,
-            depth,
-            maxObjects,
-            image,
-        });
-        setLoading(true);
+
         try {
-            const response = await axios.get('https://myapi.com/data');
-            console.log(response.data);
-            onCrop(response.data);
-            toast.success('3D file generated successfully!');
+            setLoading(true);
+
+            const formData = new FormData();
+            formData.append('image', image);
+
+            let crop;
+            if (imageCrop === 0) {
+                crop = 'none';
+            } else if (imageCrop === 1) {
+                crop = alignment === "" ? 'top' : alignment;
+            } else {
+                crop = alignment === "" ? 'left' : alignment;
+            }
+            formData.append('cropDetail', crop);
+
+            const croppedImageResponse = await axios.post("http://theunseenview.org:777/cropImage", formData);
+            const detectedObjectsResponse = await axios.get("http://theunseenview.org:777/getDetectedObjects");
+
+            const croppedImageData = croppedImageResponse.data;
+            console.log(croppedImageResponse);
+
+            const detectedObjects = detectedObjectsResponse.data;
+
+            onCrop(croppedImageData.imageDataUri, detectedObjects);
+            toast.success('Image cropped successfully!');
         } catch (error) {
             console.log(error);
             onCrop(error);
-            toast.error('Failed to generate 3D file.');
+            toast.error('Image cropping failed!');
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const isInputValid = (input) => {
         return input !== "";
     };
 
-    const isFormInputsValid = () => {
-        return (
-            isInputValid(height) &&
-            isInputValid(width) &&
-            isInputValid(depth) &&
-            isInputValid(maxObjects)
-        );
-    };
-
     const handleFormValidation = () => {
-        setIsFormValid(isFormInputsValid());
+        console.log(imageCrop)
+        setIsFormValid(isInputValid(image));
     };
 
     return (
@@ -123,99 +147,37 @@ function Generate({onCrop}) {
 
             <Form onSubmit={handleSubmit} className="p-4 rounded-lg bg-light">
                 <h3 className="mb-4">טופס תמונה</h3>
-                <Form.Group controlId="height">
-                    <Form.Label>גובה</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="height"
-                        placeholder="הכנס גובה תמונה"
-                        value={height}
-                        onChange={(e) => {
-                            handleInputChange(e);
-                            handleFormValidation();
-                        }}
-                    />
-                </Form.Group>
-                <Form.Group controlId="width">
-                    <Form.Label>רוחב</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="width"
-                        placeholder="הכנס רוחב תמונה"
-                        value={width}
-                        onChange={(e) => {
-                            handleInputChange(e);
-                            handleFormValidation();
-                        }}
-                    />
-                </Form.Group>
-                <Form.Group controlId="depth">
-                    <Form.Label>עומק</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="depth"
-                        placeholder="הכנס עומק"
-                        value={depth}
-                        onChange={(e) => {
-                            handleInputChange(e);
-                            handleFormValidation();
-                        }}
-                    />
-                </Form.Group>
-                <Form.Group controlId="maxObjects">
-                    <Form.Label>מספר אובייקטים מקסימלי</Form.Label>
-                    <Form.Control
-                        type="text"
-                        name="maxObjects"
-                        placeholder="הכנס מספר אובייקטים מקסימלי"
-                        value={maxObjects}
-                        onChange={(e) => {
-                            handleInputChange(e);
-                            handleFormValidation();
-                        }}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formPercentageSlider">
-                    <Form.Label>רמת בהירות רקע</Form.Label>
-                    <div className="d-flex align-items-center">
-                        <div className="mr-2">{percentage}%</div>
-                        <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            step="1"
-                            value={percentage}
-                            onChange={handlePercentageChange}
-                            className="form-control-range flex-grow-1"
-                        />
-                    </div>
+                <Form.Group controlId="description">
+                    <Form.Text style={{ fontSize: '24px'}}>נא לבחור תמונה בפורמט רק מהסוג הבא: jpg/jpeg</Form.Text>
                 </Form.Group>
                 <Form.Group controlId="image">
                     <Form.Label>תמונה</Form.Label>
                     <Form.Control
                         type="file"
                         name="image"
-                        lang={"he"}
+                        accept=".jpg, .jpeg"
                         onChange={(e) => {
                             handleInputChange(e);
-                            handleFormValidation();
                             handleImageChange(e);
+                            handleFormValidation();
                         }}
                     />
+
                     <Button
-                        className={"mt-3"}
+                        className={"mt-3 eladTheBest"}
                         variant="primary"
                         type="submit"
                         disabled={!isFormValid}>
-                        צור קובץ
+                        חתוך תמונה
                     </Button>
                 </Form.Group>
-
-                {imagePreview && <img src={imagePreview} alt="Selected Image"/>}
+                {imageCrop !== null && imageCrop !== 0 &&
+                    <VerticalAlignmentComponent onAlignmentChange={handleAlignment} onCrop={imageCrop}/>}
+                {imagePreview && <img src={imagePreview} alt="Selected Image" style={{width: '48vw', margin: "20px"}}/>}
             </Form>
         </div>
 
     );
 }
 
-export default Generate;
+export default GenerateHE;
