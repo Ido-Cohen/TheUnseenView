@@ -67,31 +67,42 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
         Object.keys(detected).some((id) => !selectedOptions[id]);
 
     const handleRandomizeClick = () => {
-        const availableShapes = Object.keys(shapes).filter(
-            (shapeKey) => shapeKey !== 'EMPTY' && !Object.values(selectedOptions).includes(shapeKey)
-        );
+        setSelectedOptions({});
 
-        // Create a random number generator with a fixed seed value
-        const currentTimestamp = new Date().getTime().toString();
-        const rng = new seedrandom(currentTimestamp);
+        setTimeout(() => {
+            setSelectedOptions((prevOptions) => {
+                let availableShapes = Object.keys(shapes).filter(
+                    (shapeKey) => shapeKey !== 'EMPTY' && !Object.values(prevOptions).includes(shapeKey)
+                );
 
-        const randomizedOptions = { ...selectedOptions };
-        Object.keys(detected).forEach((id, index) => {
-            const selectedShape = randomizedOptions[id];
-            console.log(selectedShape);
-            if (!selectedShape || selectedShape === 'EMPTY') {
-                if (index < 6 && availableShapes.length > 0) {
-                    const randomIndex = Math.floor(rng() * availableShapes.length);
-                    const shapeToAssign = availableShapes[randomIndex];
-                    randomizedOptions[id] = shapeToAssign;
-                    availableShapes.splice(randomIndex, 1);
-                } else {
-                    randomizedOptions[id] = 'EMPTY';
+                const currentTimestamp = new Date().getTime().toString();
+                const rng = new seedrandom(currentTimestamp);
+
+                let newOptions = {};
+
+                const ids = Object.keys(detected);
+
+                // Randomly shuffle the IDs array
+                for (let i = ids.length - 1; i > 0; i--) {
+                    const j = Math.floor(rng() * (i + 1));
+                    [ids[i], ids[j]] = [ids[j], ids[i]];
                 }
-            }
-        });
 
-        setSelectedOptions(randomizedOptions);
+                if (availableShapes.length >= 6 && ids.length >= 6) {
+                    for (let i = 0; i < 6; i++) {
+                        const randomIndex = Math.floor(rng() * availableShapes.length);
+                        newOptions[ids[i]] = availableShapes[randomIndex];
+                        availableShapes.splice(randomIndex, 1);
+                    }
+                }
+
+                for (let i = Object.keys(newOptions).length; i < ids.length; i++) {
+                    newOptions[ids[i]] = 'EMPTY';
+                }
+
+                return newOptions;
+            });
+        }, 0);
     };
 
     const isDisabled = (selectedOptions) => {
