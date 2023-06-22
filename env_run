@@ -1,0 +1,7 @@
+React:
+    npm run build
+    serve -l 80 -s build
+python:
+
+java:
+    

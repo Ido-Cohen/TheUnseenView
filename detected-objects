@@ -1,0 +1,7 @@
+boat, (0, 0, 192), upside-down triangles
+person, (220, 20, 60), vertical lines
+sand, (254, 212, 124), opposite diagonal lines
+sea, (73, 77, 174), triangles
+tree, (107, 142, 35), circles
+sky, (70, 130, 180), horizontal lines
+rock, (0, 114, 143), squares
