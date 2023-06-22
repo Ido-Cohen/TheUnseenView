@@ -25,11 +25,13 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
     };
 
     const handleNextClick = () => {
+        console.log(selectedOptions)
         Object.keys(selectedOptions).forEach((key) => {
             if (selectedOptions[key] === 'EMPTY') {
                 delete selectedOptions[key];
             }
         });
+        console.log(selectedOptions)
         const jsonContent = JSON.stringify(
             Object.entries(selectedOptions).reduce((result, [label, value]) => {
                 const [r, g, b] = detected[label][0]; // Get the RGB values from detected colors
@@ -87,8 +89,8 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
                     [ids[i], ids[j]] = [ids[j], ids[i]];
                 }
                 if (availableShapes.length >= 6) {
-                    // let length = ids.length < 6 ? ids.length : 0;
-                    for (let i = 0; i < 6; i++) {
+                    let length = ids.length < 6 ? ids.length : 6;
+                    for (let i = 0; i < length; i++) {
                         const randomIndex = Math.floor(rng() * availableShapes.length);
                         newOptions[ids[i]] = availableShapes[randomIndex];
                         availableShapes.splice(randomIndex, 1);
