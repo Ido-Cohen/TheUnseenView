@@ -8,7 +8,6 @@ const FinalStepHE = ({ image }) => {
     const [loading, setLoading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
     const navigate = useNavigate();
-    console.log(image)
 
     const Loader = () => (
         <div className="loader">
@@ -16,7 +15,7 @@ const FinalStepHE = ({ image }) => {
             <div></div>
             <div></div>
             <div></div>
-            <p>Generating lithophane. Please wait.</p>
+            <p>יוצר קובץ STL. אנא המתן</p>
         </div>
     );
 
@@ -68,17 +67,17 @@ const FinalStepHE = ({ image }) => {
         <div dir={'rtl'}>
             {loading && <SpinnerOverlay />}
             <div className="legend-attachment">
-                <h1 className="text-center mb-4">Download page</h1>
+                <h1 className="text-center mb-4">דף הורדה</h1>
                 <div className="row justify-content-center">
                     <div className="card">
                         <div className="card-body">
                             <div className="d-flex justify-content-center">
-                                <p style={{fontSize: '36px'}}>{image}</p>
+                                <p style={{fontSize: '36px'}}>{image.file_size_he}</p>
                             </div>
                             <div className="d-flex justify-content-center" >
                                 <button className="btn btn-primary eladTheBest" style={{padding: '10px 20px',
                                     fontSize: '20px',
-                                    borderRadius: '10px'}} onClick={handleDownload}>Download</button>
+                                    borderRadius: '10px'}} onClick={handleDownload}>לחץ להורדה</button>
                             </div>
                             {downloadProgress > 0 && (
                                 <div className="progress mt-3 h-25 mb-3">

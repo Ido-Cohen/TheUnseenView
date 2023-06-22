@@ -8,10 +8,15 @@ const VerticalAlignmentComponent = ({ onAlignmentChange,onCrop }) => {
         setAlignment(newAlignment);
         onAlignmentChange(newAlignment); // Notify the parent component
     };
+    const checkUrlContainsHe = () => {
+        const currentUrl = window.location.href;
 
+        return currentUrl.includes('he/');
+    };
     return (
         <div className="container">
-            <p>The image is too {onCrop === -1 ? 'tall' : 'wide'} please select which part of the image you want.</p>
+            {checkUrlContainsHe() ? <p>התמונה יותר מדי {onCrop === -1 ? 'גבוהה' : 'רחבה'} נא לבחור איזה חלק מהתמונה להשאיר.</p> : <p>The image is too {onCrop === -1 ? 'tall' : 'wide'} please select which part of the image you want.</p>}
+
             {onCrop !== 1 && <div className="form-check form-check-inline">
                 <input
                     className="form-check-input"
@@ -23,7 +28,7 @@ const VerticalAlignmentComponent = ({ onAlignmentChange,onCrop }) => {
                     onChange={handleAlignmentChange}
                 />
                 <label className="form-check-label" htmlFor="top">
-                    Top
+                    {checkUrlContainsHe() ? 'עליון' : 'Top'}
                 </label>
             </div>}
             {onCrop !== -1 && <div className="form-check form-check-inline">
@@ -37,7 +42,7 @@ const VerticalAlignmentComponent = ({ onAlignmentChange,onCrop }) => {
                     onChange={handleAlignmentChange}
                 />
                 <label className="form-check-label" htmlFor="left">
-                    Left
+                    {checkUrlContainsHe() ? 'שמאלי' : 'Left'}
                 </label>
             </div>}
 
@@ -52,7 +57,7 @@ const VerticalAlignmentComponent = ({ onAlignmentChange,onCrop }) => {
                     onChange={handleAlignmentChange}
                 />
                 <label className="form-check-label" htmlFor="center">
-                    Center
+                    {checkUrlContainsHe() ? 'אמצעי' : 'Center'}
                 </label>
             </div>
 
@@ -67,7 +72,7 @@ const VerticalAlignmentComponent = ({ onAlignmentChange,onCrop }) => {
                     onChange={handleAlignmentChange}
                 />
                 <label className="form-check-label" htmlFor="bottom">
-                    Bottom
+                    {checkUrlContainsHe() ? 'תחתון' : 'Bottom'}
                 </label>
             </div>}
             {onCrop !== -1 && <div className="form-check form-check-inline">
@@ -81,7 +86,7 @@ const VerticalAlignmentComponent = ({ onAlignmentChange,onCrop }) => {
                     onChange={handleAlignmentChange}
                 />
                 <label className="form-check-label" htmlFor="right">
-                    Right
+                    {checkUrlContainsHe() ? 'ימני' : 'Right'}
                 </label>
             </div>}
         </div>

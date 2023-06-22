@@ -23,6 +23,7 @@ function App() {
     const [legendImage, setLegendImage] = useState(null);
     const [imageGreyscale, setImageGreyscale] = useState(null);
     const [detectedObjects, setDetectedObjects] = useState(null);
+    const [imageSize, setImageSize] = useState({});
     const navigate = useNavigate();
 
     const checkUrlContainsHe = () => {
@@ -31,27 +32,23 @@ function App() {
         return currentUrl.includes('he/');
     };
     const handleCrop = (image,detected) => {
-        console.log(image);
         setCroppedImage(image);
         setDetectedObjects(detected);
         checkUrlContainsHe() ? navigate('/he/cropped-image') : navigate('/cropped-image');
     };
 
     const handleNext = (image) => {
-        console.log(image);
         setImageGreyscale(image);
         checkUrlContainsHe() ? navigate('/he/greyscale-image') : navigate('/greyscale-image');
     };
 
     const handleLegendNext = (image) => {
-        console.log(image);
         setLegendImage(image);
         checkUrlContainsHe()? navigate('/he/legend-attachment') : navigate('/legend-attachment');
     };
 
     const handleGenerateLithophan = (image) => {
-        console.log(image);
-        setLegendImage(image);
+        setImageSize(image);
         checkUrlContainsHe()? navigate('/he/finalize') : navigate('/finalize');
     };
 
@@ -75,8 +72,8 @@ function App() {
                 <Route exact path="/legend-attachment" element={<LegendAttachment image={legendImage} onGenerate={handleGenerateLithophan}/>}/>
                 <Route exact path="/he/legend-attachment" element={<LegendAttachmentHE image={legendImage} onGenerate={handleGenerateLithophan}/>}/>
 
-                <Route exact path="/finalize" element={<FinalStep image={legendImage}/>}/>
-                <Route exact path="/he/finalize" element={<FinalStepHE image={legendImage}/>}/>
+                <Route exact path="/finalize" element={<FinalStep image={imageSize}/>}/>
+                <Route exact path="/he/finalize" element={<FinalStepHE image={imageSize}/>}/>
 
                 <Route exact path="/about" element={<About/>}/>
                 <Route exact path="/he/about" element={<AboutHE/>}/>

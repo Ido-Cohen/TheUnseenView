@@ -1,7 +1,11 @@
 import React from 'react';
 import {Card, Col, Container, Row} from 'react-bootstrap';
-import shalva from '../New_SHALVA_Logo_English.png';
+import shalva from '../media/New_SHALVA_Logo_English.png';
 import alin from '../alin.png';
+import cropped1 from '../media/cropped.jpg'
+import legend1 from '../media/legend-attached.png'
+import pattern1 from '../media/pattern.png'
+import segment1 from '../media/segmented.png'
 
 const About = () => {
     return (
@@ -37,29 +41,44 @@ const About = () => {
                 </Row>
 
                 <Row className="mb-5">
-                    <Col md={4}>
+                    <Col md={6}>
                         <Card className="shadow-sm">
-                            <Card.Img variant="top" src="https://via.placeholder.com/400x300"/>
+                            <Card.Img variant="top" src={cropped1}/>
                             <Card.Body>
-                                <Card.Title>Image 1</Card.Title>
+                                <Card.Title>Cropped Image</Card.Title>
+                                <Card.Text>The user select an image and asked how to crop it if the image ratio isn't fit to the printer.</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
 
-                    <Col md={4}>
+                    <Col md={6}>
                         <Card className="shadow-sm">
-                            <Card.Img variant="top" src="https://via.placeholder.com/400x300"/>
+                            <Card.Img variant="top" src={segment1}/>
                             <Card.Body>
-                                <Card.Title>Image 2</Card.Title>
+                                <Card.Title>Segmented Image</Card.Title>
+                                <Card.Text>The user requested to choose a shape for each segmented object.</Card.Text>
+                                <Card.Text>The user is limited to select only 6 objects in order to avoid confusion.</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
 
-                    <Col md={4}>
+                    <Col md={6}>
                         <Card className="shadow-sm">
-                            <Card.Img variant="top" src="https://via.placeholder.com/400x300"/>
+                            <Card.Img variant="top" src={pattern1}/>
                             <Card.Body>
-                                <Card.Title>Image 3</Card.Title>
+                                <Card.Title>Pattern</Card.Title>
+                                <Card.Text>The user can optionally add the original image to the background of the pattern by adjusting the brightness of the background.</Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+
+                    <Col md={6}>
+                        <Card className="shadow-sm">
+                            <Card.Img variant="top" src={legend1}/>
+                            <Card.Body>
+                                <Card.Title>Legend Attached</Card.Title>
+                                <Card.Text>This is one step before the creation of the STL file where the user can see the final product.</Card.Text>
+                                <Card.Text>The brighter a pixel is, the more prominent it will be in the final result.</Card.Text>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -67,20 +86,15 @@ const About = () => {
 
                 <Row>
                     <Col>
-                        <h2 className="text-center mb-4">Enterprises We Work With</h2>
+                        <h2 className="text-center mb-4">Organizations We Work With</h2>
 
                         <Row className="justify-content-center align-items-center">
-                            <Col md={3}>
+                            <Col md={2}>
                                 <img src={shalva} alt="Enterprise 1" className="img-fluid my-2"/>
                             </Col>
 
-                            <Col md={3}>
+                            <Col md={2}>
                                 <img src={alin} alt="Enterprise 2" className="img-fluid my-2"/>
-                            </Col>
-
-                            <Col md={3}>
-                                <img src="https://via.placeholder.com/200x100" alt="Enterprise 3"
-                                     className="img-fluid my-2"/>
                             </Col>
                         </Row>
                     </Col>

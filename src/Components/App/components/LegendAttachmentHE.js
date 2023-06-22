@@ -7,7 +7,6 @@ import {toast} from "react-toastify";
 const LegendAttachmentHE = ({image, onGenerate}) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    console.log(image)
 
     const Loader = () => (
         <div className="loader">
@@ -48,7 +47,6 @@ const LegendAttachmentHE = ({image, onGenerate}) => {
                 timeout: 60000 // Set the timeout to 1 minute
             });
             const lithophaneImageData = lithophaneImageResponse.data;
-            console.log(lithophaneImageResponse);
 
             onGenerate(lithophaneImageData);
 
@@ -64,40 +62,20 @@ const LegendAttachmentHE = ({image, onGenerate}) => {
         }
     };
 
-    // const sendGetRequest = async () => {
-    //     setIsLoading(true);
-    //
-    //     try {
-    //         const response = await axios.get('http://theunseenview.org:777/grayscaled', {
-    //             params: {
-    //                 brightness: percentage,
-    //             },
-    //         });
-    //         setGreyscaleImage(response.data.imageDataUri);
-    //         setLastPercentage(percentage);
-    //     } catch (error) {
-    //         console.error('GET request failed:', error);
-    //     }
-    //
-    //     setIsLoading(false);
-    // };
-    //
-    // const greyscaleStyle = {
-    //     filter: `grayscale(${percentage}%)`,
-    // };
 
     return (<div dir={'rtl'}>
             {loading && <SpinnerOverlay/>}
             <div className="legend-attachment">
-                <h1 className="text-center mb-4">מקרא</h1>
+                <h1 className="text-center mb-4">תצוגה מקדימה</h1>
                 <div className="row justify-content-center">
                     <div className="card">
                         <div className="card-body">
                             <div className="image-container">
                                 <img src={image} alt="Image" className="img-fluid mb-3"/>
                             </div>
+                            <h4 className="text">ככל שפיקסל בהיר יותר, כך הוא יהיה בולט יותר בתוצאה הסופית.</h4>
                             <div className="d-flex justify-content-center">
-                                <button className="btn btn-primary" onClick={handleGenerateClick}>צור קובץ STL</button>
+                                <button className="btn btn-primary btn-lg" onClick={handleGenerateClick}>צור קובץ STL</button>
                             </div>
                         </div>
                     </div>

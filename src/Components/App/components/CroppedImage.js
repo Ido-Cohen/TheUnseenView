@@ -25,13 +25,11 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
     };
 
     const handleNextClick = () => {
-        console.log(selectedOptions)
         Object.keys(selectedOptions).forEach((key) => {
             if (selectedOptions[key] === 'EMPTY') {
                 delete selectedOptions[key];
             }
         });
-        console.log(selectedOptions)
         const jsonContent = JSON.stringify(
             Object.entries(selectedOptions).reduce((result, [label, value]) => {
                 const [r, g, b] = detected[label][0]; // Get the RGB values from detected colors
@@ -49,7 +47,6 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
         })
             .then((response) => {
                 // Handle the response from the server
-                console.log('Post request successful:', response.data);
                 toast.success('Image passed successfully');
                 onNext(response.data.imageDataUri);
             })
@@ -96,7 +93,6 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
                         availableShapes.splice(randomIndex, 1);
                     }
                 }
-                console.log(newOptions);
                 for (let i = Object.keys(newOptions).length; i < ids.length; i++) {
                     newOptions[ids[i]] = 'EMPTY';
                 }
@@ -122,6 +118,7 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
                     <div className="card">
                         <div className="card-body">
                             <h4 className="card-title">Detected Data</h4>
+                            <h5 className="card-text">Please select a shape for the objects identified in the image, up to 6 objects can be selected to avoid confusion.</h5>
                             <div className="row">
                                 {Object.entries(detected).map(([label, colors], index) => (
                                     <div key={label} className="col-md-4 mb-4">
@@ -172,14 +169,14 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
                                 ))}
                             </div>
                             <div className="text-center">
-                                <button className="btn btn-primary mr-2 eladTheBest" onClick={handleBackClick}>
+                                <button className="btn btn-primary btn-lg mr-2 eladTheBest" onClick={handleBackClick}>
                                     Back
                                 </button>
-                                <button className="btn btn-primary mr-2 eladTheBest" onClick={handleRandomizeClick}>
+                                <button className="btn btn-primary btn-lg mr-2 eladTheBest" onClick={handleRandomizeClick}>
                                     Randomize
                                 </button>
                                 <button
-                                    className="btn btn-primary eladTheBest"
+                                    className="btn btn-primary btn-lg eladTheBest"
                                     onClick={handleNextClick}
                                     disabled={isNextButtonDisabled}
                                     title={

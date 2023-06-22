@@ -8,15 +8,13 @@ const FinalStep = ({ image }) => {
     const [loading, setLoading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
     const navigate = useNavigate();
-    console.log(image)
-
     const Loader = () => (
         <div className="loader">
             <div></div>
             <div></div>
             <div></div>
             <div></div>
-            <p>Generating lithophane. Please wait.</p>
+            <p>Generating STL. Please wait.</p>
         </div>
     );
 
@@ -73,7 +71,7 @@ const FinalStep = ({ image }) => {
                     <div className="card">
                         <div className="card-body">
                             <div className="d-flex justify-content-center">
-                                <p style={{fontSize: '36px'}}>{image}</p>
+                                <p style={{fontSize: '36px'}}>{image.file_size_en}</p>
                             </div>
                             <div className="d-flex justify-content-center" >
                                 <button className="btn btn-primary eladTheBest" style={{padding: '10px 20px',

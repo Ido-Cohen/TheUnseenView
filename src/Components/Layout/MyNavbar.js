@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import logo from "../App/logo.png";
+import logo from "../App/media/logo.png";
 import {Dropdown, DropdownButton} from "react-bootstrap";
 import {IL, US} from 'country-flag-icons/react/3x2'
+import './Navbar.css';
 
 const Navbar = () => {
     const [language, setLanguage] = useState("English");
@@ -39,9 +40,10 @@ const Navbar = () => {
                 {/*</li>*/}
                 <li className="nav-item h1 m-1">
                     <Link to={language === "English" ? "/generate" : "/he/generate"} className="nav-link">
-                        {language === "English" ? 'Generate 3D' : 'יצירת קובץ'}
+                        {language === "English" ? 'Generate Image' : 'יצירת קובץ'}
                     </Link>
                 </li>
+                <span className="navbar-divider"></span>
                 <li className="nav-item h1 m-1">
                     <Link to={language === "English" ? "/about" : "/he/about"} className="nav-link">
                         {language === "English" ? 'About' : 'על הפרויקט'}

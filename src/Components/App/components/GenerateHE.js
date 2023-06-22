@@ -58,16 +58,15 @@ function GenerateHE({onCrop}) {
     };
     function checkPicDimension(width, height) {
         const ratio = width / height;
-        console.log(ratio)
         if (ratio === 16 / 9) {
             setImageCrop(0);
             setIsFormValid(true)
         } else if (ratio > 16 / 9) {
             setImageCrop(1);
-            toast.warn('The image is too wide!');
+            toast.warn('התמונה רחבה מדי!');
         } else {
             setImageCrop(-1);
-            toast.warn('The image is too tall!');
+            toast.warn('התמונה גבוהה מדי!');
         }
     }
 
@@ -84,7 +83,6 @@ function GenerateHE({onCrop}) {
                 img.onload = () => {
                     const {naturalWidth: width, naturalHeight: height} = img;
                     checkPicDimension(width, height);
-                    console.log(`Image dimensions: ${width}x${height}`);
 
                 };
                 img.src = imageUrl;
@@ -117,7 +115,6 @@ function GenerateHE({onCrop}) {
             const detectedObjectsResponse = await axios.get("http://theunseenview.org:777/getDetectedObjects");
 
             const croppedImageData = croppedImageResponse.data;
-            console.log(croppedImageResponse);
 
             const detectedObjects = detectedObjectsResponse.data;
 
@@ -137,7 +134,6 @@ function GenerateHE({onCrop}) {
     };
 
     const handleFormValidation = () => {
-        console.log(imageCrop)
         setIsFormValid(isInputValid(image));
     };
 
@@ -164,11 +160,11 @@ function GenerateHE({onCrop}) {
                     />
 
                     <Button
-                        className={"mt-3 eladTheBest"}
+                        className={"mt-3 eladTheBest btn-lg"}
                         variant="primary"
                         type="submit"
                         disabled={!isFormValid}>
-                        חתוך תמונה
+                        לשלב הבא
                     </Button>
                 </Form.Group>
                 {imageCrop !== null && imageCrop !== 0 &&

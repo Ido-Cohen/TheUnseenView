@@ -71,7 +71,6 @@ const ImageGreyscale = ({ image,onNext }) => {
         try {
             setLoading(true);
             const croppedImageResponse = await axios.get("http://theunseenview.org:777/legendAttached").then(response => response.data.imageDataUri);
-            console.log(croppedImageResponse);
             onNext(croppedImageResponse);
             toast.success('Got image legend successfully!');
         } catch (error) {
@@ -143,9 +142,11 @@ const ImageGreyscale = ({ image,onNext }) => {
                                 />
                                 <span>%</span>
                             </div>
+                            <h5 className="text-primary">Please select the brightness level for the background.</h5>
+                            <h5 className="text-warning">* It is recommended not to exceed 85% in order not to damage the quality of the shapes in printing.</h5>
                         </div>
                         <div className="d-flex justify-content-end"> {/* Use d-flex justify-content-end class */}
-                            <button className="btn btn-primary eladTheBest" onClick={handleNextClick}>Next</button>
+                            <button className="btn btn-primary btn-lg eladTheBest" onClick={handleNextClick}>Next</button>
                         </div>
                     </div>
                 </div>

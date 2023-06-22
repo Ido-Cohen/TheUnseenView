@@ -58,7 +58,6 @@ function Generate({onCrop}) {
     };
     function checkPicDimension(width, height) {
         const ratio = width / height;
-        console.log(ratio)
         if (ratio === 16 / 9) {
             setImageCrop(0);
             setIsFormValid(true)
@@ -84,7 +83,6 @@ function Generate({onCrop}) {
                 img.onload = () => {
                     const {naturalWidth: width, naturalHeight: height} = img;
                     checkPicDimension(width, height);
-                    console.log(`Image dimensions: ${width}x${height}`);
 
                 };
                 img.src = imageUrl;
@@ -117,14 +115,12 @@ function Generate({onCrop}) {
             const detectedObjectsResponse = await axios.get("http://theunseenview.org:777/getDetectedObjects");
 
             const croppedImageData = croppedImageResponse.data;
-            console.log(croppedImageResponse);
 
             const detectedObjects = detectedObjectsResponse.data;
 
             onCrop(croppedImageData.imageDataUri, detectedObjects);
             toast.success('Image cropped successfully!');
         } catch (error) {
-            console.log(error);
             onCrop(error);
             toast.error('Image cropping failed!');
         } finally {
@@ -137,7 +133,6 @@ function Generate({onCrop}) {
     };
 
     const handleFormValidation = () => {
-        console.log(imageCrop)
         setIsFormValid(isInputValid(image));
     };
 
@@ -164,11 +159,11 @@ function Generate({onCrop}) {
                     />
 
                     <Button
-                        className={"mt-3 eladTheBest"}
+                        className={"mt-3 eladTheBest btn-lg"}
                         variant="primary"
                         type="submit"
                         disabled={!isFormValid}>
-                        Crop
+                        Next Step
                     </Button>
                 </Form.Group>
                 {imageCrop !== null && imageCrop !== 0 &&

@@ -48,7 +48,6 @@ const LegendAttachment = ({image, onGenerate}) => {
                 timeout: 60000 // Set the timeout to 1 minute
             });
             const lithophaneImageData = lithophaneImageResponse.data;
-            console.log(lithophaneImageResponse);
 
             onGenerate(lithophaneImageData);
 
@@ -64,40 +63,20 @@ const LegendAttachment = ({image, onGenerate}) => {
         }
     };
 
-    // const sendGetRequest = async () => {
-    //     setIsLoading(true);
-    //
-    //     try {
-    //         const response = await axios.get('http://theunseenview.org:777/grayscaled', {
-    //             params: {
-    //                 brightness: percentage,
-    //             },
-    //         });
-    //         setGreyscaleImage(response.data.imageDataUri);
-    //         setLastPercentage(percentage);
-    //     } catch (error) {
-    //         console.error('GET request failed:', error);
-    //     }
-    //
-    //     setIsLoading(false);
-    // };
-    //
-    // const greyscaleStyle = {
-    //     filter: `grayscale(${percentage}%)`,
-    // };
 
     return (<>
             {loading && <SpinnerOverlay/>}
             <div className="legend-attachment">
-                <h1 className="text-center mb-4">Legend attachments</h1>
+                <h1 className="text-center mb-4">Preview</h1>
                 <div className="row justify-content-center">
                     <div className="card">
                         <div className="card-body">
                             <div className="image-container">
                                 <img src={image} alt="Image" className="img-fluid mb-3"/>
                             </div>
+                            <h4 className="text">The brighter a pixel is, the more prominent it will be in the final result.</h4>
                             <div className="d-flex justify-content-center">
-                                <button className="btn btn-primary" onClick={handleGenerateClick}>Generate</button>
+                                <button className="btn btn-primary btn-lg" onClick={handleGenerateClick}>Generate STL file</button>
                             </div>
                         </div>
                     </div>

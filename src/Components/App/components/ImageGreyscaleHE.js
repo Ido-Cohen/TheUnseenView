@@ -71,12 +71,11 @@ const ImageGreyscaleHE = ({ image,onNext }) => {
         try {
             setLoading(true);
             const croppedImageResponse = await axios.get("http://theunseenview.org:777/legendAttached").then(response => response.data.imageDataUri);
-            console.log(croppedImageResponse);
             onNext(croppedImageResponse);
-            toast.success('Got image legend successfully!');
+            toast.success('יצירת המקרא עברה בהצלחה!');
         } catch (error) {
             console.log(error);
-            toast.error('Image legend failed!');
+            toast.error('משהו השתבש!');
         } finally {
             setLoading(false);
         }
@@ -110,7 +109,7 @@ const ImageGreyscaleHE = ({ image,onNext }) => {
     return (<div dir={'rtl'}>
             {loading && <SpinnerOverlay/>}
             <div className="image-greyscale">
-                <h1 className="text-center mb-4">בהירות הרקע</h1>
+                <h1 className="text-center mb-4">הוספת רקע</h1>
                 <div className="row justify-content-center">
                     <div className="card">
                         <div className="card-body">
@@ -143,9 +142,11 @@ const ImageGreyscaleHE = ({ image,onNext }) => {
                                     />
                                     <span>%</span>
                                 </div>
+                                <h5 className="text-primary">נא לבחור את רמת הבהירות עבור הרקע.</h5>
+                                <h5 className="text-warning">*מומלץ לא לעבור את ה85% על מנת לא לפגוע באיכות הצורות בהדפסה.</h5>
                             </div>
                             <div className="d-flex justify-content-end"> {/* Use d-flex justify-content-end class */}
-                                <button className="btn btn-primary eladTheBest" onClick={handleNextClick}>לדף הבא</button>
+                                <button className="btn btn-primary btn-lg eladTheBest" onClick={handleNextClick}>לדף הבא</button>
                             </div>
                         </div>
                     </div>
