@@ -27,7 +27,7 @@ function GenerateHE({onCrop}) {
             <div></div>
             <div></div>
             <div></div>
-            <p>Detecting objects. Please wait.</p>
+            <p>מזהה אובייקטים. אנא המתן.</p>
         </div>
     );
     const SpinnerOverlay = () => (
@@ -128,7 +128,7 @@ function GenerateHE({onCrop}) {
             const detectedObjects = detectedObjectsResponse.data;
 
             onCrop(croppedImageData.imageDataUri, detectedObjects);
-            toast.success('התמונה עובדה בהצלחה!');
+            toast.success('התמונה נקלטה בהצלחה!');
         } catch (error) {
             console.log(error);
             onCrop(error);

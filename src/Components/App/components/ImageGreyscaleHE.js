@@ -17,7 +17,7 @@ const ImageGreyscaleHE = ({ image,onNext }) => {
             <div></div>
             <div></div>
             <div></div>
-            <p>Detecting objects. Please wait.</p>
+            <p>מעבד נתונים. אנא המתן.</p>
         </div>
     );
 
