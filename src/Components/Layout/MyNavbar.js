@@ -19,6 +19,15 @@ const Navbar = () => {
         setLanguage(lang);
     };
 
+    const checkUrlContainsFinalize = () => {
+        const currentUrl = window.location.href;
+
+        return currentUrl.includes('/finalize') ||
+            currentUrl.includes('/legend-attachment') ||
+            currentUrl.includes('/greyscale-image') ||
+            currentUrl.includes('/cropped-image');
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4"
              dir={language === "English" ? 'ltr' : 'rtl'}>
@@ -51,7 +60,7 @@ const Navbar = () => {
                     </Link>
                 </li>
             </ul>
-            <DropdownButton
+            {!checkUrlContainsFinalize() && <DropdownButton
                 title={
                     language === "Hebrew" ? (
                         <IL title="Israel" style={{width: 50, height: 50}}/>
@@ -68,7 +77,7 @@ const Navbar = () => {
                 <Dropdown.Item onClick={() => handleLanguageChange("English")}>
                     <US title="United States" style={{width: 50, height: 50}}/> English
                 </Dropdown.Item>
-            </DropdownButton>
+            </DropdownButton>}
         </nav>
     );
 };
