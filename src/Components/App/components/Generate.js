@@ -4,6 +4,7 @@ import axios from "axios";
 import '../../../loader.css';
 import {toast} from 'react-toastify';
 import VerticalAlignmentComponent from "./VerticalAlignmentComponent";
+import {getSessionIdFromCookie} from "../../utils/cookies";
 
 function Generate({onCrop}) {
     const [imagePreview, setImagePreview] = useState("");
@@ -12,7 +13,9 @@ function Generate({onCrop}) {
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
-
+    function saveSessionIdToCookie(sessionId) {
+        document.cookie = `sessionID=${sessionId}; path=/`;
+    }
 
     const handleAlignment = (data) => {
         setAlignment(data);
@@ -112,7 +115,13 @@ function Generate({onCrop}) {
             formData.append('cropDetail', crop);
 
             const croppedImageResponse = await axios.post("http://theunseenview.org:777/cropImage", formData);
-            const detectedObjectsResponse = await axios.get("http://theunseenview.org:777/getDetectedObjects");
+            const sessionId = croppedImageResponse.data.sessionId;
+            saveSessionIdToCookie(sessionId);
+            const detectedObjectsResponse = await axios.get("http://theunseenview.org:777/getDetectedObjects", {
+                headers: {
+                    'Session-ID': getSessionIdFromCookie()
+                }
+            });
 
             const croppedImageData = croppedImageResponse.data;
 

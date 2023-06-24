@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import './ImageGreyscale.css';
-import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import {getSessionIdFromCookie} from "../../utils/cookies";
 
 const ImageGreyscale = ({ image,onNext }) => {
     const [percentage, setPercentage] = useState(85);
@@ -10,7 +10,6 @@ const ImageGreyscale = ({ image,onNext }) => {
     const [greyscaleImage, setGreyscaleImage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
     const Loader = () => (
         <div className="loader">
@@ -70,7 +69,11 @@ const ImageGreyscale = ({ image,onNext }) => {
     const handleNextClick = async () => {
         try {
             setLoading(true);
-            const croppedImageResponse = await axios.get("http://theunseenview.org:777/legendAttached").then(response => response.data.imageDataUri);
+            const croppedImageResponse = await axios.get("http://theunseenview.org:777/legendAttached", {
+                headers: {
+                    'Session-ID': getSessionIdFromCookie()
+                },
+            }).then(response => response.data.imageDataUri);
             onNext(croppedImageResponse);
             toast.success('Got image legend successfully!');
         } catch (error) {
@@ -88,6 +91,9 @@ const ImageGreyscale = ({ image,onNext }) => {
             const response = await axios.get('http://theunseenview.org:777/grayscaled', {
                 params: {
                     brightness: percentage,
+                },
+                headers: {
+                    'Session-ID': getSessionIdFromCookie()
                 },
             });
             setGreyscaleImage(response.data.imageDataUri);

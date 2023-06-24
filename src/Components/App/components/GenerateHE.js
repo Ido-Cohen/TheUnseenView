@@ -4,6 +4,7 @@ import axios from "axios";
 import '../../../loader.css';
 import {toast} from 'react-toastify';
 import VerticalAlignmentComponent from "./VerticalAlignmentComponent";
+import {getSessionIdFromCookie} from "../../utils/cookies";
 
 function GenerateHE({onCrop}) {
     const [imagePreview, setImagePreview] = useState("");
@@ -12,7 +13,9 @@ function GenerateHE({onCrop}) {
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState(null);
     const [isFormValid, setIsFormValid] = useState(false);
-
+    function saveSessionIdToCookie(sessionId) {
+        document.cookie = `sessionID=${sessionId}; path=/`;
+    }
 
     const handleAlignment = (data) => {
         setAlignment(data);
@@ -112,18 +115,24 @@ function GenerateHE({onCrop}) {
             formData.append('cropDetail', crop);
 
             const croppedImageResponse = await axios.post("http://theunseenview.org:777/cropImage", formData);
-            const detectedObjectsResponse = await axios.get("http://theunseenview.org:777/getDetectedObjects");
+            const sessionId = croppedImageResponse.data.sessionId;
+            saveSessionIdToCookie(sessionId);
+            const detectedObjectsResponse = await axios.get("http://theunseenview.org:777/getDetectedObjects", {
+                headers: {
+                    'Session-ID': getSessionIdFromCookie()
+                }
+            });
 
             const croppedImageData = croppedImageResponse.data;
 
             const detectedObjects = detectedObjectsResponse.data;
 
             onCrop(croppedImageData.imageDataUri, detectedObjects);
-            toast.success('Image cropped successfully!');
+            toast.success('התמונה עובדה בהצלחה!');
         } catch (error) {
             console.log(error);
             onCrop(error);
-            toast.error('Image cropping failed!');
+            toast.error('משהו השתבש!');
         } finally {
             setLoading(false);
         }

@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import './ImageGreyscale.css';
-import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
+import {getSessionIdFromCookie} from "../../utils/cookies";
 
 const LegendAttachment = ({image, onGenerate}) => {
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    console.log(image)
 
     const Loader = () => (
         <div className="loader">
@@ -45,7 +43,10 @@ const LegendAttachment = ({image, onGenerate}) => {
 
 
             const lithophaneImageResponse = await axios.post("http://theunseenview.org:777/generateLithophane", {}, {
-                timeout: 60000 // Set the timeout to 1 minute
+                timeout: 60000, // Set the timeout to 1 minute
+                headers : {
+                    'Session-ID': getSessionIdFromCookie()
+                }
             });
             const lithophaneImageData = lithophaneImageResponse.data;
 

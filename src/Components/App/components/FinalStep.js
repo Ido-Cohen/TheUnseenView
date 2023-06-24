@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import './ImageGreyscale.css';
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
+import {getSessionIdFromCookie} from "../../utils/cookies";
 
 const FinalStep = ({ image }) => {
     const [loading, setLoading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
-    const navigate = useNavigate();
     const Loader = () => (
         <div className="loader">
             <div></div>
@@ -41,6 +40,9 @@ const FinalStep = ({ image }) => {
         try {
             const response = await axios.get('http://theunseenview.org:777/lithophaneStl', {
                 responseType: 'blob',
+                headers: {
+                    'Session-ID': getSessionIdFromCookie()
+                },
                 onDownloadProgress: (progressEvent) => {
                     const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     setDownloadProgress(progress);

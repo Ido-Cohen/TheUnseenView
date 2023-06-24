@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {toast} from 'react-toastify';
 import seedrandom from 'seedrandom';
+import {getSessionIdFromCookie} from "../../utils/cookies";
 
 const CroppedImage = ({croppedImage, detected, onNext}) => {
     const [selectedOptions, setSelectedOptions] = useState({});
@@ -43,6 +44,7 @@ const CroppedImage = ({croppedImage, detected, onNext}) => {
         axios.post('http://theunseenview.org:777/chosenPatterns', jsonContent, {
             headers: {
                 'Content-Type': 'application/json',
+                'Session-ID': getSessionIdFromCookie()
             },
         })
             .then((response) => {
