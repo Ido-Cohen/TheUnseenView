@@ -1,27 +1,81 @@
 # TheUnseenView
 
-The Unseen View is a groundbreaking platform that aims to bridge the visual gap for blind individuals through the power of tactile imaging. This innovative web application integrates advanced image processing and 3D printing technologies to create meaningful experiences for those without sight.
+A two-student software-engineering capstone prototype that turns images into textured relief models intended for 3D printing. Users crop an image, select patterns for detected regions, adjust the background, attach a legend and generate an STL file.
 
-Here's how it works: Users submit an image to the platform, which then utilizes object detection algorithms to segment the image into distinct components. Once the image is segmented, users have the opportunity to select a unique tactile pattern for each segment, allowing them to customize the final product to their liking and familiarity. They can also choose a desired background brightness, adding another dimension of customization.
+**Status:** research prototype. The public checkout preserves the implementation and example outputs, but is not currently a reproducible, production-ready application. See the restoration checklist below before attempting to run it.
 
-The magic happens when the server generates a 3D printable STL file, which is essentially a tactile map of the original image. This lithophane is unique in that each image segment is represented by a distinct pattern, which blind individuals can feel and understand. To make the experience even more accessible, the bottom of the lithophane includes a legend in Braille, with each pattern described for the user's reference.
+## Example outputs
 
-The importance of The Unseen View cannot be overstated. It represents a significant leap forward in making visual information accessible to blind individuals. This project enables them to "see" and comprehend images in a way they couldn't before, thereby expanding their understanding of the world. It's not just about enabling access to visual information, but doing so in a way that's intuitive, customizable, and meaningful for the user.
+These are existing files from the project, not newly generated results.
 
-Whether it's for educational purposes, personal interest, or simply the joy of exploring a new way to experience images, The Unseen View holds immense potential. It's a step toward a world where visual impairment doesn't limit access to visual information, fostering inclusivity and understanding in our increasingly visual world.
+| Segmentation | Tactile patterns |
+| --- | --- |
+| ![Example image segmented into object regions](src/Components/App/media/segmented.png) | ![Distinct geometric patterns assigned to image regions](src/Components/App/media/pattern.png) |
 
-The Unseen View isn't just revolutionary in its mission, it also boasts an impressively user-friendly interface, making the process of creating tactile images both simple and enjoyable. The streamlined operation of the site allows even those with minimal technical skills to navigate with ease.
+![Example relief image with attached legend, before STL generation](src/Components/App/media/legend-attached.png)
 
-![image](https://github.com/Ido-Cohen/TheUnseenView/assets/61789416/53b220d3-06c8-4191-80db-88b531e7c8f8)
+The project includes Hebrew/English interfaces and Hebrew Braille-label assets. Their inclusion is not a claim of validated tactile readability or accessibility compliance.
 
-Upon visiting http://theunseenview.org/, users are met with a clear and intuitive interface. The process starts by submitting an image through a straightforward uploading feature. The website takes care of the complex image processing and object detection behind the scenes, segmenting the image into distinct elements.
+## Architecture
 
-![image](https://github.com/Ido-Cohen/TheUnseenView/assets/61789416/9cb2a4d8-3953-4404-a362-8fe9ca9f3b36)
+```text
+React image workflow
+    -> Flask API (app.py)
+    -> crop / resize / segmentation
+    -> pattern + grayscale composition
+    -> legend attachment
+    -> NumPy / numpy-stl mesh generation
+    -> STL download
+```
 
-Once the image has been segmented, users are then prompted to choose a unique tactile pattern for each segment. This selection process is made simple and intuitive, with a user-friendly tool that allows for easy customization. The same goes for the selection of background brightness, which can be adjusted with a simple slider tool.
+- **Frontend:** React 18, React Bootstrap, Axios, React Router.
+- **Backend:** Flask / Flask-CORS, Pillow, NumPy, OpenCV and numpy-stl.
+- **Segmentation dependency:** a vendored Detectron2 tree and model configuration. Detectron2 is third-party work, not an implementation by this project's authors; retain its license and attribution.
+- **Mesh generation:** `stlMaker.py` converts image intensity to relief height. Current constants specify a 200 mm width, 0.1 mm sample spacing and 1.6â€“3.2 mm relief heights.
 
-The final step is the generation of the 3D STL file. With the click of a button, the server creates the tactile map, incorporating all the user's customizations. The file is then ready to be downloaded and 3D printed.
+## Public API flow
 
-![loop](https://github.com/Ido-Cohen/TheUnseenView/assets/61789416/e8a92cd9-ded6-4837-ab58-c586eebf411a)
+| Method / path | Purpose |
+| --- | --- |
+| `POST /cropImage` | Accept an image and crop data; resize and segment it |
+| `GET /getDetectedObjects` | Return detected regions |
+| `POST /chosenPatterns` | Assign patterns and build the legend |
+| `GET /grayscaled?brightness=...` | Compose the patterned and grayscale image |
+| `GET /legendAttached` | Attach the legend |
+| `POST /generateLithophane` | Generate the STL |
+| `GET /lithophaneStl` | Download the generated file |
 
-The Unseen View makes the complex process of turning visual images into tactile ones incredibly straightforward. Each step is guided, intuitive, and designed with the user's ease in mind. It's a testament to the site's design that such an innovative service can be delivered in such an accessible and user-friendly way.
+## Local setup and restoration
+
+The frontend uses Create React App:
+
+```sh
+npm ci
+npm start
+```
+
+This starts the UI, not a working end-to-end pipeline. The components currently reference the historical HTTP API at `theunseenview.org:777`; use a configurable local API URL before sending images. Do not upload private images to that historical endpoint.
+
+The backend entry point is `python app.py`, but **the following prerequisites must first be restored**:
+
+1. Recover the original `DetectorSeg.py` source. `app.py` imports it, but only compiled cache files appear in this checkout. `Detector.py` has a different constructor and method signature and is not a drop-in replacement.
+2. Reconstruct and pin a compatible Python / PyTorch / Detectron2 environment. There is no project-level requirements file or verified environment lock. Legacy Pillow APIs are also used.
+3. Provision model weights and verify the label/font assets and their redistribution permissions. The repository includes Arial and Hebrew Braille font files.
+4. Create writable processing directories and replace Windows-specific paths for portability.
+5. Configure the frontend's backend URL and restrict CORS before any hosted use.
+
+The backend's current entry point binds to all interfaces on port 777. Use an isolated development environment until the issues below are addressed.
+
+## Limitations and next steps
+
+- Shared output filenames make the current pipeline unsuitable for concurrent users; add per-job directories and explicit job states.
+- Upload size/type validation, authentication, worker isolation, timeouts and resource limits need implementation before public deployment.
+- STL generation is CPU/memory intensive. Add mesh/manifold checks and a small regression fixture before claiming print readiness.
+- The Braille legend and tactile patterns require review with intended users and appropriate accessibility expertise.
+- No end-to-end test suite for the application or reproducible deployment is included. Tests under `detectron2/` belong to that dependency.
+
+The most useful next milestone is a reproducible local image-to-STL example, followed by an asynchronous job API with isolated processing and measurable tests.
+
+## Attribution
+
+Developed as a two-person student project. Repository history includes contributions under Elad and Ido-Cohen; commit counts do not establish individual responsibility for every feature. Third-party Detectron2 code retains its own license. No production adoption or measured user outcome is claimed here.
